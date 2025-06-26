@@ -91,23 +91,21 @@
     </style>
 </head>
 <body>
-
     <div class="dashboard-container">
         <div class="dashboard-grid">
             <!-- ETH/USDT Chart Panel -->
             <div class="chart-panel">
                 <div class="chart-panel-title">ETH/USDT</div>
                 <div class="widget-wrapper" id="tv_chart_eth"></div>
-                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='["COIN", "PRICE_CHANGE_1D", "SMA20_SMA50_BS_SIGNAL", "SMA20_TREND",  "X_SMA20_CROSS_SMA50", "SMA20", "SMA50", "EMA50", "SHORT_TERM_TREND", "SHORT_TERM_TREND_CHANGE"]' affiliateid='test_id'></altfins-screener-data-component> 
-                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='["VOLUME_CHANGE", "MACD_BS_SIGNAL",  "IR_CCI20", "IR_WILLIAMS", "IR_STOCH_SLOW", "CD_DRAGONFLY_DOJI_V2", "MEDIUM_TERM_TREND", "MEDIUM_TERM_TREND_CHANGE"]' affiliateid='test_id'></altfins-screener-data-component>
+                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='["COIN", "PRICE_CHANGE_1D", "MACD_BS_SIGNAL", "SMA20_SMA50_BS_SIGNAL", "SMA20_TREND",  "X_SMA20_CROSS_SMA50", "SMA20", "SMA50", "EMA50"]' affiliateid='test_id'></altfins-screener-data-component> 
+                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='["VOLUME_CHANGE", "X_LAST_PRICE_CROSS_SMA20", "X_LAST_PRICE_CROSS_SMA50", "X_LAST_PRICE_CROSS_EMA50", "CD_DRAGONFLY_DOJI_V2", "SHORT_TERM_TREND", "SHORT_TERM_TREND_CHANGE"]' affiliateid='test_id'></altfins-screener-data-component>
             </div>
 
-            <!-- SOL/USDT Chart Panel -->
             <div class="chart-panel">
-                <div class="chart-panel-title">SOL/USDT</div>
-                <div class="widget-wrapper" id="tv_chart_sol"></div>
-                <altfins-screener-data-component symbols='["SOL"]' theme='no-border compact dark' valueids='["COIN", "PRICE_CHANGE_1D", "SMA20_SMA50_BS_SIGNAL", "SMA20_TREND",  "X_SMA20_CROSS_SMA50", "SMA20", "SMA50", "EMA50", "SHORT_TERM_TREND", "SHORT_TERM_TREND_CHANGE"]' affiliateid='test_id'></altfins-screener-data-component>
-             <altfins-screener-data-component symbols='["SOL"]' theme='no-border compact dark' valueids='["VOLUME_CHANGE", "MACD_BS_SIGNAL",  "IR_CCI20", "IR_WILLIAMS", "IR_STOCH_SLOW", "CD_DRAGONFLY_DOJI_V2", "MEDIUM_TERM_TREND", "MEDIUM_TERM_TREND_CHANGE"]' affiliateid='test_id'></altfins-screener-data-component>
+                <div class="chart-panel-title">ETH/USDT</div>
+                <div class="widget-wrapper" id="tv_chart_bb"></div>
+                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='["COIN", "PRICE_CHANGE_1D", "IR_BANDED_OSC", "IR_PRICE_ABOVE_BOLLINGER_UPPER", "IR_PRICE_BELOW_BOLLINGER_LOWER", "X_LAST_PRICE_CROSS_BOLLINGER_BAND_UPPER", "X_LAST_PRICE_CROSS_BOLLINGER_BAND_LOWER"]' affiliateid='test_id'></altfins-screener-data-component>
+                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "IR_RSI14", "IR_OSCILLATOR_RATING", "IR_STOCH", "IR_STOCH_SLOW",  "IR_CCI20", "IR_WILLIAMS",  "MEDIUM_TERM_TREND", "MEDIUM_TERM_TREND_CHANGE"]' affiliateid='test_id'></altfins-screener-data-component>
             </div>
         </div>
     </div>
@@ -168,20 +166,100 @@
                             "slowLength": 26,
                             "signalLength": 9
                         }
-                    },
-                    // {
-                    //     "id": "RSI@tv-basicstudies",
-                    //     "inputs": {
-                    //         "length": 14
-                    //     }
-                    // }
+                    }
                 ],
                 "container_id": containerId
             });
         }
 
-        createTradingViewWidget("tv_chart_eth", "BINANCE:ETHUSDT");
-        createTradingViewWidget("tv_chart_sol", "BINANCE:SOLUSDT");
+        function createTradingViewWidgetWithBB(containerId, symbol) {
+            new TradingView.widget({
+                "autosize": true,
+                "symbol": symbol,
+                "interval": "D",
+                "timezone": "Etc/UTC",
+                "theme": "light",
+                "style": "1",
+                "locale": "en",
+                "enable_publishing": false,
+                "hide_side_toolbar": true,
+                "save_image": false,
+                "details": true,
+                "withdateranges": false,
+                "hide_volume": false,
+                "allow_symbol_change": false,
+                "show_popup_button": false,
+                "popup_width": "1000",
+                "popup_height": "650",
+                "width": "100%",
+                "height": "100%",
+                "studies": [
+                    "STD;Bollinger_Bands",
+                    "STD;PSAR",
+                    "STD;RSI"
+                ],
+                "container_id": containerId
+            });
+        }
+
+        // 從 URL 參數獲取交易對，預設為 ETH
+        function getSymbolFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const symbol = urlParams.get('symbol');
+
+            // 支援的交易對列表
+            const supportedSymbols = {
+                'ETH': 'BINANCE:ETHUSDT',
+                'SOL': 'BINANCE:SOLUSDT',
+                'BTC': 'BINANCE:BTCUSDT',
+                'ADA': 'BINANCE:ADAUSDT',
+                'SUI': 'BINANCE:ADAUSDT',
+            };
+
+            // 如果 URL 中有有效的 symbol 參數，使用它；否則預設為 ETH
+            if (symbol && supportedSymbols[symbol.toUpperCase()]) {
+                return {
+                    name: symbol.toUpperCase(),
+                    pair: supportedSymbols[symbol.toUpperCase()]
+                };
+            }
+
+            return {
+                name: 'ETH',
+                pair: 'BINANCE:ETHUSDT'
+            };
+        }
+
+        // 更新頁面標題和面板標題
+        function updatePageContent(symbolInfo) {
+            // 更新頁面標題
+            document.title = `${symbolInfo.name}/USDT Dashboard - Altfins Widgets`;
+
+            // 更新圖表面板標題
+            const chartTitles = document.querySelectorAll('.chart-panel-title');
+            if (chartTitles.length >= 2) {
+                chartTitles[0].textContent = `${symbolInfo.name}/USDT`;
+                chartTitles[1].textContent = `${symbolInfo.name}/USDT`;
+            }
+
+            // 更新 altfins 組件的 symbols 屬性
+            const altfinsComponents = document.querySelectorAll('altfins-screener-data-component');
+            altfinsComponents.forEach(component => {
+                component.setAttribute('symbols', `["${symbolInfo.name}"]`);
+            });
+        }
+
+        // 獲取當前選擇的交易對
+        const currentSymbol = getSymbolFromURL();
+
+        // 更新頁面內容
+        updatePageContent(currentSymbol);
+
+        // 創建圖表
+        createTradingViewWidget("tv_chart_eth", currentSymbol.pair);
+        createTradingViewWidgetWithBB("tv_chart_bb", currentSymbol.pair);
+
+
     </script>
 
 </body>
