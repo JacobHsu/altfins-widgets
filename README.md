@@ -1,13 +1,13 @@
-# Altfins Dynamic Trading Dashboard
+# Altfins Trading Dashboard
 
-一個支援多種加密貨幣的動態交易儀表板，整合了 TradingView 圖表和 Altfins 技術分析數據，支援 URL 參數動態切換交易對。
+一個支援多種加密貨幣的交易儀表板，整合了 TradingView 圖表和 Altfins 技術分析數據，支援簡單的代碼設定切換交易對。
 
 ## 🚀 核心功能
 
-### � URL 參數支援
-- **動態交易對切換**：通過 URL 參數選擇不同的加密貨幣
-- **預設 ETH**：無參數時預設顯示 ETH/USDT
-- **支援 主流幣種**：ETH, SOL, BTC, ADA
+### ⚙️ 簡單設定切換
+- **代碼設定**：在 JavaScript 中直接修改要顯示的交易對
+- **當前設定**：SOL/USDT (可輕鬆修改)
+- **支援 8 種主流幣種**：ETH, SOL, BTC, ADA, DOT, MATIC, LINK, UNI
 
 ### 📊 雙面板設計
 - **主圖表面板**：顯示選定交易對的完整技術分析
@@ -54,32 +54,35 @@
 
 ### 基本訪問
 ```
-# 預設顯示 ETH/USDT
+# 當前設定顯示 SOL/USDT
 https://yourusername.github.io/altfins-widgets/
 
 # 或本地
 index.html
 ```
 
-### URL 參數切換交易對
+### 🔧 修改交易對設定
+
+在 `index.html` 中找到以下代碼並修改：
+
+```javascript
+// 交易對設定 - 在這裡修改要顯示的交易對
+function getSelectedSymbol() {
+    // 🔧 在這裡修改交易對設定
+    const symbol = 'SOL';  // 改成你想要的交易對
+
+    // 可選交易對: ETH, SOL, BTC, ADA, DOT, MATIC, LINK, UNI
+}
 ```
-# 顯示 SOL/USDT
-https://yourusername.github.io/altfins-widgets/?symbol=SOL
 
-# 顯示 BTC/USDT
-https://yourusername.github.io/altfins-widgets/?symbol=BTC
+### 支援的交易對
+| 設定值 | 交易對 | 說明 |
+|--------|--------|------|
+| `'ETH'` | ETH/USDT | 以太坊 |
+| `'SOL'` | SOL/USDT | Solana (當前設定) |
+| `'BTC'` | BTC/USDT | 比特幣 |
+| `'ADA'` | ADA/USDT | Cardano |
 
-# 顯示 ADA/USDT
-https://yourusername.github.io/altfins-widgets/?symbol=ADA
-```
-
-### 支援的交易對參數
-| 參數 | 交易對 | 範例 URL |
-|------|--------|----------|
-| `ETH` | ETH/USDT | `?symbol=ETH` |
-| `SOL` | SOL/USDT | `?symbol=SOL` |
-| `BTC` | BTC/USDT | `?symbol=BTC` |
-| `ADA` | ADA/USDT | `?symbol=ADA` |
 
 ## 🛠️ 本地開發
 
@@ -91,7 +94,7 @@ python -m http.server 8000
 npx serve .
 
 # 然後訪問
-http://localhost:8000/?symbol=SOL
+http://localhost:8000/
 ```
 
 ## 📁 項目結構
@@ -107,19 +110,25 @@ altfins-widgets/
 
 ## ⚙️ 技術實現
 
-### URL 參數解析
+### 交易對設定
 ```javascript
-// 自動從 URL 獲取交易對參數
-const urlParams = new URLSearchParams(window.location.search);
-const symbol = urlParams.get('symbol') || 'ETH'; // 預設 ETH
+// 交易對設定 - 在這裡修改要顯示的交易對
+function getSelectedSymbol() {
+    const symbol = 'SOL';  // 🔧 修改這裡來切換交易對
 
-// 支援的交易對映射
-const supportedSymbols = {
-    'ETH': 'BINANCE:ETHUSDT',
-    'SOL': 'BINANCE:SOLUSDT',
-    'BTC': 'BINANCE:BTCUSDT',
-    // ... 更多交易對
-};
+    // 支援的交易對映射
+    const supportedSymbols = {
+        'ETH': 'BINANCE:ETHUSDT',
+        'SOL': 'BINANCE:SOLUSDT',
+        'BTC': 'BINANCE:BTCUSDT',
+        // ... 更多交易對
+    };
+
+    return {
+        name: symbol.toUpperCase(),
+        pair: supportedSymbols[symbol.toUpperCase()]
+    };
+}
 ```
 
 ### 動態內容更新
@@ -128,21 +137,29 @@ const supportedSymbols = {
 - 📈 **TradingView 圖表**：載入對應交易對數據
 - 📋 **Altfins 組件**：切換到對應加密貨幣數據
 
+## 🎯 自定義配置
+
+### 切換交易對
+1. 打開 `index.html`
+2. 找到 `getSelectedSymbol()` 函數
+3. 修改 `const symbol = 'SOL';` 為你想要的交易對
+4. 保存文件並刷新頁面
+
 
 ## 🌟 特色亮點
 
-- ✅ **零配置**：直接通過 URL 參數切換交易對
+- ✅ **簡單設定**：直接修改代碼中的交易對設定
 - ✅ **GitHub Pages 友好**：完全靜態，無需後端服務器
 - ✅ **響應式設計**：支援桌面和移動設備
 - ✅ **實時數據**：整合專業的 TradingView 和 Altfins 數據源
 - ✅ **多指標分析**：提供全面的技術分析工具
-- ✅ **分享友好**：可直接分享帶參數的 URL
+- ✅ **穩定可靠**：無 URL 參數問題，直接代碼設定
 
 ## 📱 使用場景
 
-1. **個人交易監控**：設置書籤快速切換不同交易對
-2. **團隊分享**：分享特定交易對的分析頁面
-3. **多屏顯示**：在不同螢幕顯示不同交易對
+1. **個人交易監控**：修改代碼設定監控特定交易對
+2. **多版本部署**：為不同交易對創建不同版本
+3. **專注分析**：固定顯示最關注的交易對
 4. **嵌入網站**：作為 iframe 嵌入其他網站
 
 ## 🔗 相關資源
@@ -152,3 +169,10 @@ const supportedSymbols = {
 - [Altfins Screener Component](https://cdn.altfins.com/js/altfins-screener-data-component.js)
 - [GitHub Pages 部署指南](https://docs.github.com/en/pages)
 
+## 📄 授權
+
+本項目使用 MIT 授權條款。
+
+---
+
+**🚀 立即體驗**: 修改代碼中的 `const symbol = 'SOL';` 為你想要的交易對，然後打開 `index.html` 開始使用！
