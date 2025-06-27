@@ -207,16 +207,14 @@
         // 交易對設定 - 在這裡修改要顯示的交易對
         function getSelectedSymbol() {
             // 🔧 在這裡修改交易對設定
-            const symbol = 'SOL';  // 可選: ETH, SOL, BTC, ADA, DOGE, SUI
+            const symbol = 'ETH';  // 可選: ETH, SOL, BTC, ADA
 
             // 支援的交易對列表 - 使用 BINANCE 格式
             const supportedSymbols = {
                 'ETH': 'BINANCE:ETHUSDT',
                 'SOL': 'BINANCE:SOLUSDT',
                 'BTC': 'BINANCE:BTCUSDT',
-                'ADA': 'BINANCE:ADAUSDT',
-                'DOGE': 'BINANCE:DOGEUSDT',
-                'SUI': 'BINANCE:SUIUSDT'
+                'ADA': 'BINANCE:ADAUSDT'
             };
 
             // 返回選定的交易對
