@@ -88,9 +88,40 @@
             max-height: 80px;
             overflow: hidden;
         }
+        .interval-buttons {
+            position: absolute;
+            top: 21px;
+            right: 24px;
+            z-index: 1000;
+            display: flex;
+            gap: 8px;
+        }
+        .interval-buttons button {
+            background-color: #2a2e39;
+            color: #d1d4dc;
+            border: 1px solid #434651;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 14px;
+        }
+        .interval-buttons button:hover {
+            background-color: #434651;
+        }
+        .interval-buttons button.active {
+            background-color: #2962FF;
+            color: #fff;
+            border-color: #2962FF;
+        }
     </style>
 </head>
 <body>
+    <div class="interval-buttons">
+        <button id="btn-1h">1h</button>
+        <button id="btn-4h">4h</button>
+        <button id="btn-1d" class="active">1d</button>
+    </div>
     <div class="dashboard-container">
         <div class="dashboard-grid">
             <!-- ETH/USDT Chart Panel -->
@@ -113,12 +144,13 @@
     <!-- TradingView Widget Script -->
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
     <script type="text/javascript">
-        function createTradingViewWidget(containerId, symbol) {
-            console.log('Creating TradingView widget with symbol:', symbol);
-            new TradingView.widget({
+        let tvWidget1, tvWidget2;
+
+        function getWidgetConfig(symbol, interval) {
+            return {
                 "autosize": true,
                 "symbol": symbol,
-                "interval": "D",
+                "interval": interval,
                 "timezone": "Etc/UTC",
                 "theme": "light",
                 "style": "1",
@@ -134,74 +166,46 @@
                 "popup_width": "1000",
                 "popup_height": "650",
                 "width": "100%",
-                "height": "100%",
-                "studies": [
-                    {
-                        "id": "MASimple@tv-basicstudies",
-                        "inputs": {
-                            "length": 20
-                        }
-                    },
-                    {
-                        "id": "MASimple@tv-basicstudies",
-                        "inputs": {
-                            "length": 50
-                        }
-                    },
-                    {
-                        "id": "MAExp@tv-basicstudies",
-                        "inputs": {
-                            "length": 20
-                        }
-                    },
-                    {
-                        "id": "MAExp@tv-basicstudies",
-                        "inputs": {
-                            "length": 50
-                        }
-                    },
-                    {
-                        "id": "MACD@tv-basicstudies",
-                        "inputs": {
-                            "fastLength": 12,
-                            "slowLength": 26,
-                            "signalLength": 9
-                        }
-                    }
-                ],
-                "container_id": containerId
-            });
+                "height": "100%"
+            };
         }
 
-        function createTradingViewWidgetWithBB(containerId, symbol) {
-            console.log('Creating TradingView BB widget with symbol:', symbol);
-            new TradingView.widget({
-                "autosize": true,
-                "symbol": symbol,
-                "interval": "D",
-                "timezone": "Etc/UTC",
-                "theme": "light",
-                "style": "1",
-                "locale": "en",
-                "enable_publishing": false,
-                "hide_side_toolbar": true,
-                "save_image": false,
-                "details": true,
-                "withdateranges": false,
-                "hide_volume": false,
-                "allow_symbol_change": false,
-                "show_popup_button": false,
-                "popup_width": "1000",
-                "popup_height": "650",
-                "width": "100%",
-                "height": "100%",
-                "studies": [
-                    "STD;Bollinger_Bands",
-                    "STD;PSAR",
-                    "STD;RSI"
-                ],
-                "container_id": containerId
-            });
+        function createTradingViewWidget(containerId, symbol, interval) {
+            let config = getWidgetConfig(symbol, interval);
+            config.studies = [
+                {"id": "MASimple@tv-basicstudies", "inputs": {"length": 20}},
+                {"id": "MASimple@tv-basicstudies", "inputs": {"length": 50}},
+                {"id": "MAExp@tv-basicstudies", "inputs": {"length": 20}},
+                {"id": "MAExp@tv-basicstudies", "inputs": {"length": 50}},
+                {"id": "MACD@tv-basicstudies", "inputs": {"fastLength": 12, "slowLength": 26, "signalLength": 9}}
+            ];
+            config.container_id = containerId;
+            return new TradingView.widget(config);
+        }
+
+        function createTradingViewWidgetWithBB(containerId, symbol, interval) {
+            let config = getWidgetConfig(symbol, interval);
+            config.studies = ["STD;Bollinger_Bands", "STD;PSAR", "STD;RSI"];
+            config.container_id = containerId;
+            return new TradingView.widget(config);
+        }
+        
+        function renderWidgets(interval) {
+            const currentSymbol = getSelectedSymbol();
+            
+            // Clear existing widgets
+            document.getElementById("tv_chart_eth").innerHTML = '';
+            document.getElementById("tv_chart_bb").innerHTML = '';
+
+            // Create new widgets with the specified interval
+            tvWidget1 = createTradingViewWidget("tv_chart_eth", currentSymbol.pair, interval);
+            tvWidget2 = createTradingViewWidgetWithBB("tv_chart_bb", currentSymbol.pair, interval);
+        }
+
+        function changeInterval(interval, btnElement) {
+            renderWidgets(interval);
+            document.querySelectorAll('.interval-buttons button').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
         }
 
         // 交易對設定 - 在這裡修改要顯示的交易對
@@ -253,15 +257,15 @@
             });
         }
 
-        // 獲取當前選擇的交易對
+        // Initial setup
         const currentSymbol = getSelectedSymbol();
-
-        // 更新頁面內容
         updatePageContent(currentSymbol);
+        renderWidgets('D'); // Initial render with 1d interval
 
-        // 創建圖表
-        createTradingViewWidget("tv_chart_eth", currentSymbol.pair);
-        createTradingViewWidgetWithBB("tv_chart_bb", currentSymbol.pair);
+        // Add event listeners for interval buttons
+        document.getElementById('btn-1h').addEventListener('click', (e) => changeInterval('60', e.target));
+        document.getElementById('btn-4h').addEventListener('click', (e) => changeInterval('240', e.target));
+        document.getElementById('btn-1d').addEventListener('click', (e) => changeInterval('D', e.target));
 
 
     </script>
