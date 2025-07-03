@@ -1,0 +1,108 @@
+html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #131722;
+            color: #d1d4dc;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        .dashboard-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            padding: 16px;
+            box-sizing: border-box;
+        }
+        h1 {
+            font-weight: 500;
+            margin: 0 0 8px 0;
+            flex-shrink: 0;
+            font-size: 20px;
+        }
+        .dashboard-grid {
+            flex-grow: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr;
+            gap: 12px;
+            min-height: calc(100vh - 80px);
+            width: 100%;
+            overflow: hidden;
+        }
+        .chart-panel {
+            display: flex;
+            flex-direction: column;
+            background-color: #1e222d;
+            border: 1px solid #2a2e39;
+            border-radius: 6px;
+            overflow: hidden;
+            min-width: 0;
+            width: 100%;
+        }
+        .chart-panel-title {
+            padding: 10px 15px;
+            font-weight: 500;
+            font-size: 16px;
+            border-bottom: 1px solid #2a2e39;
+            flex-shrink: 0;
+        }
+        .widget-wrapper {
+            flex-grow: 1;
+            width: 100%;
+            height: 100%;
+            min-height: 600px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 隱藏 altfins 組件的 footer */
+        altfins-screener-data-component {
+            display: block;
+            margin: 0;
+            padding: 0;
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 隱藏第一個組件的 footer，讓第二個組件緊貼 */
+        altfins-screener-data-component:first-of-type [part="footer"] {
+            display: none;
+        }
+
+        altfins-screener-data-component + altfins-screener-data-component {
+            margin-top: -10px;
+            z-index: 1;
+        }
+        altfins-screener-data-component {
+            flex-shrink: 0;
+            max-height: 80px;
+            overflow: hidden;
+        }
+        .interval-buttons {
+            position: absolute;
+            top: 21px;
+            right: 24px;
+            z-index: 1000;
+            display: flex;
+            gap: 8px;
+        }
+        .interval-buttons button {
+            background-color: #2a2e39;
+            color: #d1d4dc;
+            border: 1px solid #434651;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 14px;
+        }
+        .interval-buttons button:hover {
+            background-color: #434651;
+        }
+        .interval-buttons button.active {
+            background-color: #2962FF;
+            color: #fff;
+            border-color: #2962FF;
+        }
