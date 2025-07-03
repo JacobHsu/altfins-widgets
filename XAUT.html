@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TradingView Fullscreen Dashboard</title>
+    <script type="module" src="https://cdn.altfins.com/js/altfins-screener-data-component.js"></script>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #131722;
+            color: #d1d4dc;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        .dashboard-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            padding: 16px;
+            box-sizing: border-box;
+        }
+        h1 {
+            font-weight: 500;
+            margin: 0 0 8px 0;
+            flex-shrink: 0;
+            font-size: 20px;
+        }
+        .dashboard-grid {
+            flex-grow: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr;
+            gap: 12px;
+            min-height: calc(100vh - 80px);
+            width: 100%;
+            overflow: hidden;
+        }
+        .chart-panel {
+            display: flex;
+            flex-direction: column;
+            background-color: #1e222d;
+            border: 1px solid #2a2e39;
+            border-radius: 6px;
+            overflow: hidden;
+            min-width: 0;
+            width: 100%;
+        }
+        .chart-panel-title {
+            padding: 10px 15px;
+            font-weight: 500;
+            font-size: 16px;
+            border-bottom: 1px solid #2a2e39;
+            flex-shrink: 0;
+        }
+        .widget-wrapper {
+            flex-grow: 1;
+            width: 100%;
+            height: 100%;
+            min-height: 600px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 隱藏 altfins 組件的 footer */
+        altfins-screener-data-component {
+            display: block;
+            margin: 0;
+            padding: 0;
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 隱藏第一個組件的 footer，讓第二個組件緊貼 */
+        altfins-screener-data-component:first-of-type [part="footer"] {
+            display: none;
+        }
+
+        altfins-screener-data-component + altfins-screener-data-component {
+            margin-top: -10px;
+            z-index: 1;
+        }
+        altfins-screener-data-component {
+            flex-shrink: 0;
+            max-height: 80px;
+            overflow: hidden;
+        }
+        .interval-buttons {
+            position: absolute;
+            top: 21px;
+            right: 24px;
+            z-index: 1000;
+            display: flex;
+            gap: 8px;
+        }
+        .interval-buttons button {
+            background-color: #2a2e39;
+            color: #d1d4dc;
+            border: 1px solid #434651;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 14px;
+        }
+        .interval-buttons button:hover {
+            background-color: #434651;
+        }
+        .interval-buttons button.active {
+            background-color: #2962FF;
+            color: #fff;
+            border-color: #2962FF;
+        }
+    </style>
+</head>
+<body>
+    <div class="interval-buttons">
+        <button id="btn-1h">1h</button>
+        <button id="btn-4h">4h</button>
+        <button id="btn-1d" class="active">1d</button>
+    </div>
+    <div class="dashboard-container">
+        <div class="dashboard-grid">
+            <!-- ETH/USDT Chart Panel -->
+            <div class="chart-panel">
+                <div class="chart-panel-title">ETH/USDT</div>
+                <div class="widget-wrapper" id="tv_chart_eth"></div>
+                <altfins-screener-data-component symbols='["XAUT"]' theme='no-border compact dark' valueids='["COIN", "PRICE_CHANGE_1D", "MACD_BS_SIGNAL", "SMA20_SMA50_BS_SIGNAL", "SMA20_TREND",  "X_SMA20_CROSS_SMA50", "SMA20", "SMA50", "EMA50"]' affiliateid='test_id'></altfins-screener-data-component> 
+                <altfins-screener-data-component symbols='["XAUT"]' theme='no-border compact dark' valueids='["VOLUME_CHANGE", "X_LAST_PRICE_CROSS_SMA20", "X_LAST_PRICE_CROSS_SMA50", "X_LAST_PRICE_CROSS_EMA50", "CD_DRAGONFLY_DOJI_V2", "SHORT_TERM_TREND", "SHORT_TERM_TREND_CHANGE"]' affiliateid='test_id'></altfins-screener-data-component>
+            </div>
+
+            <div class="chart-panel">
+                <div class="chart-panel-title">ETH/USDT</div>
+                <div class="widget-wrapper" id="tv_chart_bb"></div>
+                <altfins-screener-data-component symbols='["XAUT"]' theme='no-border compact dark' valueids='["COIN", "PRICE_CHANGE_1D", "IR_BANDED_OSC", "IR_PRICE_ABOVE_BOLLINGER_UPPER", "IR_PRICE_BELOW_BOLLINGER_LOWER", "X_LAST_PRICE_CROSS_BOLLINGER_BAND_UPPER", "X_LAST_PRICE_CROSS_BOLLINGER_BAND_LOWER"]' affiliateid='test_id'></altfins-screener-data-component>
+                <altfins-screener-data-component symbols='["XAUT"]' theme='no-border compact dark' valueids='[ "IR_RSI14", "IR_OSCILLATOR_RATING", "IR_STOCH", "IR_STOCH_SLOW",  "IR_CCI20", "IR_WILLIAMS",  "MEDIUM_TERM_TREND", "MEDIUM_TERM_TREND_CHANGE"]' affiliateid='test_id'></altfins-screener-data-component>
+            </div>
+        </div>
+    </div>
+
+    <!-- TradingView Widget Script -->
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+    <script type="text/javascript">
+        let tvWidget1, tvWidget2;
+
+        function getWidgetConfig(symbol, interval) {
+            return {
+                "autosize": true,
+                "symbol": symbol,
+                "interval": interval,
+                "timezone": "Etc/UTC",
+                "theme": "light",
+                "style": "1",
+                "locale": "en",
+                "enable_publishing": false,
+                "hide_side_toolbar": true,
+                "save_image": false,
+                "details": true,
+                "withdateranges": false,
+                "hide_volume": false,
+                "allow_symbol_change": false,
+                "show_popup_button": false,
+                "popup_width": "1000",
+                "popup_height": "650",
+                "width": "100%",
+                "height": "100%"
+            };
+        }
+
+        function createTradingViewWidget(containerId, symbol, interval) {
+            let config = getWidgetConfig(symbol, interval);
+            config.studies = [
+                {"id": "MASimple@tv-basicstudies", "inputs": {"length": 20}},
+                {"id": "MASimple@tv-basicstudies", "inputs": {"length": 50}},
+                {"id": "MAExp@tv-basicstudies", "inputs": {"length": 20}},
+                {"id": "MAExp@tv-basicstudies", "inputs": {"length": 50}},
+                {"id": "MACD@tv-basicstudies", "inputs": {"fastLength": 12, "slowLength": 26, "signalLength": 9}}
+            ];
+            config.container_id = containerId;
+            return new TradingView.widget(config);
+        }
+
+        function createTradingViewWidgetWithBB(containerId, symbol, interval) {
+            let config = getWidgetConfig(symbol, interval);
+            config.studies = ["STD;Bollinger_Bands", "STD;PSAR", "STD;RSI"];
+            config.container_id = containerId;
+            return new TradingView.widget(config);
+        }
+        
+        function renderWidgets(interval) {
+            const currentSymbol = getSelectedSymbol();
+            
+            // Clear existing widgets
+            document.getElementById("tv_chart_eth").innerHTML = '';
+            document.getElementById("tv_chart_bb").innerHTML = '';
+
+            // Create new widgets with the specified interval
+            tvWidget1 = createTradingViewWidget("tv_chart_eth", currentSymbol.pair, interval);
+            tvWidget2 = createTradingViewWidgetWithBB("tv_chart_bb", currentSymbol.pair, interval);
+        }
+
+        function changeInterval(interval, btnElement) {
+            renderWidgets(interval);
+            document.querySelectorAll('.interval-buttons button').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+        }
+
+        // 交易對設定 - 在這裡修改要顯示的交易對
+        function getSelectedSymbol() {
+            // 🔧 在這裡修改交易對設定
+            const symbol = 'XAUT'; 
+
+            // 支援的交易對列表 - 使用 BYBIT 格式
+            const supportedSymbols = {
+                'XAUT': 'BYBIT:XAUTUSDT'
+            };
+
+            // 返回選定的交易對
+            if (supportedSymbols[symbol.toUpperCase()]) {
+                return {
+                    name: symbol.toUpperCase(),
+                    pair: supportedSymbols[symbol.toUpperCase()]
+                };
+            }
+
+            // 如果設定的交易對不存在，預設返回 ETH
+            return {
+                name: 'ETH',
+                pair: 'BINANCE:ETHUSDT'
+            };
+        }
+
+        // 更新頁面標題和面板標題
+        function updatePageContent(symbolInfo) {
+            // 更新頁面標題
+            document.title = `${symbolInfo.name}/USDT Dashboard - Altfins Widgets`;
+
+            // 更新圖表面板標題
+            const chartTitles = document.querySelectorAll('.chart-panel-title');
+            if (chartTitles.length >= 2) {
+                chartTitles[0].textContent = `${symbolInfo.name}/USDT`;
+                chartTitles[1].textContent = `${symbolInfo.name}/USDT`;
+            }
+
+            // 更新 altfins 組件的 symbols 屬性
+            const altfinsComponents = document.querySelectorAll('altfins-screener-data-component');
+            altfinsComponents.forEach(component => {
+                component.setAttribute('symbols', `["${symbolInfo.name}"]`);
+            });
+        }
+
+        // Initial setup
+        const currentSymbol = getSelectedSymbol();
+        updatePageContent(currentSymbol);
+        renderWidgets('D'); // Initial render with 1d interval
+
+        // Add event listeners for interval buttons
+        document.getElementById('btn-1h').addEventListener('click', (e) => changeInterval('60', e.target));
+        document.getElementById('btn-4h').addEventListener('click', (e) => changeInterval('240', e.target));
+        document.getElementById('btn-1d').addEventListener('click', (e) => changeInterval('D', e.target));
+
+
+    </script>
+
+</body>
+</html>
