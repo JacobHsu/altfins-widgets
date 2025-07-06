@@ -117,9 +117,11 @@ function getSelectedSymbol() {
     const symbol = page.replace('.html', '').toUpperCase();
 
     const supportedSymbols = {
+        'BTC': 'BINANCE:BTCUSDT',
         'ETH': 'BINANCE:ETHUSDT',
         'SOL': 'BINANCE:SOLUSDT',
-        'BTC': 'BINANCE:BTCUSDT',
+        'XRP': 'BINANCE:XRPUSDT',
+        'BNB': 'BINANCE:BNBUSDT',
         'ADA': 'BINANCE:ADAUSDT',
         'DOGE': 'BINANCE:DOGEUSDT',
         'SUI': 'BINANCE:SUIUSDT',
