@@ -102,7 +102,17 @@ html, body {
             background-color: #434651;
         }
         .interval-buttons button.active {
-            background-color: #2962FF;
-            color: #fff;
-            border-color: #2962FF;
-        }
+    background-color: #2962FF;
+    color: #fff;
+    border-color: #2962FF;
+}
+
+#symbol-select {
+    background-color: #2a2e39;
+    color: #d1d4dc;
+    border: 1px solid #434651;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 14px;
+}

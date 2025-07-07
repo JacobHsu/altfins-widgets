@@ -1,5 +1,17 @@
 let tvWidget1, tvWidget2, tvWidget3, tvWidget4;
 
+const supportedSymbols = {
+    'BTC': 'BINANCE:BTCUSDT',
+    'ETH': 'BINANCE:ETHUSDT',
+    'SOL': 'BINANCE:SOLUSDT',
+    'XRP': 'BINANCE:XRPUSDT',
+    'BNB': 'BINANCE:BNBUSDT',
+    'ADA': 'BINANCE:ADAUSDT',
+    'DOGE': 'BINANCE:DOGEUSDT',
+    'SUI': 'BINANCE:SUIUSDT',
+    'XAUT': 'BYBIT:XAUTUSDT'
+};
+
 function createCommonHTML() {
     const body = document.querySelector('body');
     body.innerHTML = `
@@ -7,6 +19,7 @@ function createCommonHTML() {
         <button id="btn-1h">1h</button>
         <button id="btn-4h">4h</button>
         <button id="btn-1d" class="active">1d</button>
+        <select id="symbol-select"></select>
     </div>
     <div class="dashboard-container">
         <div class="dashboard-grid">
@@ -137,18 +150,6 @@ function getSelectedSymbol() {
     const page = path.split("/").pop();
     const symbol = page.replace('.html', '').toUpperCase();
 
-    const supportedSymbols = {
-        'BTC': 'BINANCE:BTCUSDT',
-        'ETH': 'BINANCE:ETHUSDT',
-        'SOL': 'BINANCE:SOLUSDT',
-        'XRP': 'BINANCE:XRPUSDT',
-        'BNB': 'BINANCE:BNBUSDT',
-        'ADA': 'BINANCE:ADAUSDT',
-        'DOGE': 'BINANCE:DOGEUSDT',
-        'SUI': 'BINANCE:SUIUSDT',
-        'XAUT': 'BYBIT:XAUTUSDT'
-    };
-
     if (supportedSymbols[symbol]) {
         return { name: symbol, pair: supportedSymbols[symbol] };
     }
@@ -253,6 +254,15 @@ const indicatorDefinitions = [
             "MFI < 20 通常被視為超賣，可能出現反彈。",
             "MFI 與價格的背離（例如，價格創新高但 MFI 下降）是趨勢可能反轉的強烈信號。"
         ]
+    },
+    {
+        name: "威廉 %R 指標 (Williams %R)",
+        description: "Williams %R 是一個動量指標，與隨機振盪指標 (Stochastic Oscillator) 非常相似。它用於確定超買和超賣水平。",
+        usage: [
+            "%R 讀數在 -20 以上表示超買狀態。",
+            "%R 讀數在 -80 以下表示超賣狀態。",
+            "與RSI一樣，尋找價格與%R之間的背離可以提供強烈的反轉信號。"
+        ]
     }
 ];
 
@@ -283,6 +293,24 @@ const combinedScenarios = [
             "操作建議：這是左側交易者嘗試進場做多的時機，但仍需注意風險控制。"
         ],
         styles: ['font-weight: bold; color: #4ECDC4', 'font-weight: normal', 'font-weight: bold; color: #2962FF', 'font-weight: normal']
+    },
+    {
+        title: "組合判斷：CCI, %R, RSI 識別多重過熱信號",
+        explanation: [
+            "當 %cCCI > 100 且 Williams %R > -20%c 時，市場短期內可能處於 %c極度超買（過熱）%c 狀態，回調風險較高。",
+            "但如果此時 %cRSI 並未顯示超買（例如 RSI < 70）%c，這可能意味著上漲趨勢的 %c中期動能依然穩固%c。",
+            "操作建議：這種情況下，短期交易者可能會考慮獲利了結或減倉，但中期趨勢交易者可能會選擇持有，等待短期指標回落後再加倉。"
+        ],
+        styles: ['font-weight: bold; color: #FF6B6B', 'font-weight: normal', 'font-weight: bold; color: #F9A825', 'font-weight: normal', 'font-weight: bold; color: #4ECDC4', 'font-weight: normal', 'font-weight: bold; color: #2962FF', 'font-weight: normal']
+    },
+    {
+        title: "組合判斷：KC 突破 vs BB 未突破 (擠壓的前兆)",
+        explanation: [
+            "當價格 %c突破肯特納通道 (KC) 上軌%c，但 %c未能突破布林通道 (BB) 上軌%c 時，這是一個值得關注的信號。",
+            "這種情況通常發生在 %c「擠壓」%c 期間，表明波動性正在增加，但尚未達到足以觸發 BB 突破的程度。",
+            "操作建議：這可以視為趨勢可能啟動的 %c早期警報%c。交易者應密切關注，一旦價格隨後也突破 BB 上軌，便可確認趨勢，並考慮進場。"
+        ],
+        styles: ['font-weight: bold; color: #4ECDC4', 'font-weight: normal', 'font-weight: bold; color: #FF6B6B', 'font-weight: normal', 'font-weight: bold; color: #F9A825', 'font-weight: normal', 'font-weight: bold; color: #2962FF', 'font-weight: normal']
     }
 ];
 
@@ -328,6 +356,21 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btn-1h').addEventListener('click', (e) => changeInterval('60', e.target));
     document.getElementById('btn-4h').addEventListener('click', (e) => changeInterval('240', e.target));
     document.getElementById('btn-1d').addEventListener('click', (e) => changeInterval('D', e.target));
+
+    const symbolSelect = document.getElementById('symbol-select');
+    for (const symbol in supportedSymbols) {
+        const option = document.createElement('option');
+        option.value = symbol;
+        option.textContent = symbol;
+        if (symbol === currentSymbol.name) {
+            option.selected = true;
+        }
+        symbolSelect.appendChild(option);
+    }
+
+    symbolSelect.addEventListener('change', (e) => {
+        window.location.href = `${e.target.value}.html`;
+    });
 
     logTutorial(); 
     setInterval(() => {
