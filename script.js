@@ -1,4 +1,4 @@
-let tvWidget1, tvWidget2, tvWidget3;
+let tvWidget1, tvWidget2, tvWidget3, tvWidget4;
 
 function createCommonHTML() {
     const body = document.querySelector('body');
@@ -14,24 +14,32 @@ function createCommonHTML() {
             <div class="chart-panel">
                 <div class="chart-panel-title"> </div>
                 <div class="widget-wrapper" id="tv_chart_eth"></div>
-                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='["COIN", "PRICE_CHANGE_1D", "MACD_BS_SIGNAL", "SMA20_SMA50_BS_SIGNAL", "SMA20_TREND",  "X_SMA20_CROSS_SMA50"]' affiliateid='test_id'></altfins-screener-data-component>
-                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "X_LAST_PRICE_CROSS_SMA20", "X_LAST_PRICE_CROSS_SMA50", "SHORT_TERM_TREND", "SHORT_TERM_TREND_CHANGE"]' affiliateid='test_id'></altfins-screener-data-component>
+                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='["COIN", "SMA20_SMA50_BS_SIGNAL", "SMA20_TREND",   "X_SMA20_CROSS_SMA50"]' affiliateid='test_id'></altfins-screener-data-component>
+                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[  "MACD_BS_SIGNAL", "SHORT_TERM_TREND", "SHORT_TERM_TREND_CHANGE"]' affiliateid='test_id'></altfins-screener-data-component>
             </div>
 
             <!-- Chart Panel 2 -->
             <div class="chart-panel">
                 <div class="chart-panel-title"> </div>
                 <div class="widget-wrapper" id="tv_chart_bb"></div>
-                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "IR_BANDED_OSC",  "IR_PRICE_ABOVE_BOLLINGER_UPPER", "IR_PRICE_BELOW_BOLLINGER_LOWER"]' affiliateid='test_id'></altfins-screener-data-component>
-                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "IR_RSI14",  "IR_STOCH",  "MEDIUM_TERM_TREND", "MEDIUM_TERM_TREND_CHANGE"]' affiliateid='test_id'></altfins-screener-data-component>
+                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "IR_BANDED_OSC",   "IR_PRICE_ABOVE_BOLLINGER_UPPER", "IR_PRICE_BELOW_BOLLINGER_LOWER"]' affiliateid='test_id'></altfins-screener-data-component>
+                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[  "IR_RSI14",  "MEDIUM_TERM_TREND", "MEDIUM_TERM_TREND_CHANGE"]' affiliateid='test_id'></altfins-screener-data-component>
             </div>
 
             <!-- Chart Panel 3 -->
             <div class="chart-panel">
                 <div class="chart-panel-title"> </div>
                 <div class="widget-wrapper" id="tv_chart_kc"></div>
-                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "VOLUME_CHANGE", "IR_UNUSUAL_VOLUME_SPIKE",  "BULL_POWER", "BEAR_POWER"]' affiliateid='test_id'></altfins-screener-data-component>
-                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "IR_CCI20", "IR_OSCILLATOR_RATING",  "LONG_TERM_TREND", "LONG_TERM_TREND_CHANGE"]' affiliateid='test_id'></altfins-screener-data-component>
+                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "IR_OSCILLATOR_RATING", "IR_STOCH", "IR_STOCH_SLOW"]' affiliateid='test_id'></altfins-screener-data-component>
+                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "IR_CCI20",  "LONG_TERM_TREND", "LONG_TERM_TREND_CHANGE"]' affiliateid='test_id'></altfins-screener-data-component>
+            </div>
+
+            <!-- Chart Panel 4 -->
+            <div class="chart-panel">
+                <div class="chart-panel-title"> </div>
+                <div class="widget-wrapper" id="tv_chart_dc"></div>
+                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "BULL_POWER", "BEAR_POWER", "PRICE_CHANGE_1D", "PRICE_CHANGE_1W", "PRICE_CHANGE_1M"]' affiliateid='test_id'></altfins-screener-data-component>
+                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "IR_WILLIAMS",    "VOLUME_CHANGE","IR_UNUSUAL_VOLUME_SPIKE"]' affiliateid='test_id'></altfins-screener-data-component>
             </div>
         </div>
     </div>
@@ -83,11 +91,22 @@ function createTradingViewWidgetWithBB(containerId, symbol, interval) {
 }
 
 function createTradingViewWidgetWithKC(containerId, symbol, interval) {
-    let config = getWidgetConfig(symbol, interval, true);
+    let config = getWidgetConfig(symbol, interval, false);
     config.studies = [
         "STD;Keltner_Channels",
         "STD;CCI",
         "STD;Pivot%1Points%1High%1Low"
+    ];
+    config.container_id = containerId;
+    return new TradingView.widget(config);
+}
+
+function createTradingViewWidgetWithDC(containerId, symbol, interval) {
+    let config = getWidgetConfig(symbol, interval, true);
+    config.studies = [
+        "STD;Williams_Alligator",
+        "STD;Donchian_Channels",
+        "STD;Willams_R"
     ];
     config.container_id = containerId;
     return new TradingView.widget(config);
@@ -99,10 +118,12 @@ function renderWidgets(interval) {
     document.getElementById("tv_chart_eth").innerHTML = '';
     document.getElementById("tv_chart_bb").innerHTML = '';
     document.getElementById("tv_chart_kc").innerHTML = '';
+    document.getElementById("tv_chart_dc").innerHTML = '';
 
     tvWidget1 = createTradingViewWidget("tv_chart_eth", currentSymbol.pair, interval);
     tvWidget2 = createTradingViewWidgetWithBB("tv_chart_bb", currentSymbol.pair, interval);
     tvWidget3 = createTradingViewWidgetWithKC("tv_chart_kc", currentSymbol.pair, interval);
+    tvWidget4 = createTradingViewWidgetWithDC("tv_chart_dc", currentSymbol.pair, interval);
 }
 
 function changeInterval(interval, btnElement) {
@@ -137,10 +158,11 @@ function getSelectedSymbol() {
 function updatePageContent(symbolInfo) {
     document.title = `${symbolInfo.name}/USDT Dashboard - Altfins Widgets`;
     const chartTitles = document.querySelectorAll('.chart-panel-title');
-    if (chartTitles.length >= 3) {
+    if (chartTitles.length >= 4) {
         chartTitles[0].textContent = `${symbolInfo.name}/USDT`;
         chartTitles[1].textContent = `${symbolInfo.name}/USDT`;
         chartTitles[2].textContent = `${symbolInfo.name}/USDT`;
+        chartTitles[3].textContent = `${symbolInfo.name}/USDT`;
     }
     const altfinsComponents = document.querySelectorAll('altfins-screener-data-component');
     altfinsComponents.forEach(component => {
@@ -203,6 +225,33 @@ const indicatorDefinitions = [
             "CCI > +100 可能表示進入超買狀態，趨勢可能反轉。",
             "CCI < -100 可能表示進入超賣狀態，趨勢可能反轉。",
             "CCI 從負值區向上突破 0 軸，可視為買入機會；反之則為賣出機會。"
+        ]
+    },
+    {
+        name: "威廉指標 (Williams Alligator)",
+        description: "該指標使用三條平滑移動平均線，模擬鱷魚的嘴、牙齒和下巴。它有助於識別趨勢的形成和方向。",
+        usage: [
+            "當三條線糾纏在一起時，表示市場處於休眠狀態（鱷魚在睡覺）。",
+            "當線條開始分開並向上（綠色 > 紅色 > 藍色）時，是上升趨勢的信號。",
+            "當線條開始分開並向下（藍色 > 紅色 > 綠色）時，是下降趨勢的信號。"
+        ]
+    },
+    {
+        name: "唐奇安通道 (Donchian Channels)",
+        description: "此指標由三條線組成，分別是指定週期內的最高價、最低價以及兩者的平均值。它主要用於識別突破。",
+        usage: [
+            "價格突破上軌是強烈的買入信號，表明趨勢可能向上。",
+            "價格跌破下軌是強烈的賣出信號，表明趨勢可能向下。",
+            "中線可用於判斷趨勢的強度和潛在的回調水平。"
+        ]
+    },
+    {
+        name: "資金流指標 (Money Flow Index - MFI)",
+        description: "MFI 是一個成交量加權的動量指標，用於衡量資金流入和流出的強度。它類似於 RSI，但考慮了成交量。",
+        usage: [
+            "MFI > 80 通常被視為超買，可能出現回調。",
+            "MFI < 20 通常被視為超賣，可能出現反彈。",
+            "MFI 與價格的背離（例如，價格創新高但 MFI 下降）是趨勢可能反轉的強烈信號。"
         ]
     }
 ];
