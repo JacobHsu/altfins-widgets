@@ -180,10 +180,32 @@ function updatePageContent(symbolInfo) {
     document.title = `${symbolInfo.name}/USDT Dashboard - Altfins Widgets`;
     const chartTitles = document.querySelectorAll('.chart-panel-title');
     if (chartTitles.length >= 4) {
-        chartTitles[0].textContent = `${symbolInfo.name}/USDT`;
-        chartTitles[1].textContent = `${symbolInfo.name}/USDT`;
-        chartTitles[2].textContent = `${symbolInfo.name}/USDT`;
-        chartTitles[3].textContent = `${symbolInfo.name}/USDT`;
+        // 第一張圖表：MA, MACD
+        chartTitles[0].innerHTML = `${symbolInfo.name}/USDT <span class="indicators-info">
+            <a href="https://tw.tradingview.com/support/solutions/43000502589/" target="_blank" class="indicator-link">MA</a>, 
+            <a href="https://tw.tradingview.com/support/solutions/43000502344/" target="_blank" class="indicator-link">MACD</a>
+        </span>`;
+        
+        // 第二張圖表：BB, SAR, RSI // MA 轉向指標 震盪指標穩健型
+        chartTitles[1].innerHTML = `${symbolInfo.name}/USDT <span class="indicators-info">
+            <a href="https://tw.tradingview.com/support/solutions/43000501840/" target="_blank" class="indicator-link">BB</a>, 
+            <a href="https://tw.tradingview.com/support/solutions/43000502597/" target="_blank" class="indicator-link">SAR</a>, 
+            <a href="https://tw.tradingview.com/support/solutions/43000502338/" target="_blank" class="indicator-link">RSI</a>
+        </span>`;
+        
+        // 第三張圖表：KC, Pivots, CCI // EMA + ATR 震盪指標敏感型
+        chartTitles[2].innerHTML = `${symbolInfo.name}/USDT <span class="indicators-info">
+            <a href="https://tw.tradingview.com/support/solutions/43000502266/" target="_blank" class="indicator-link">KC</a>, 
+            <a href="https://tw.tradingview.com/support/solutions/43000589195/" target="_blank" class="indicator-link">Pivots</a>, 
+            <a href="https://tw.tradingview.com/support/solutions/43000502001/" target="_blank" class="indicator-link">CCI</a>
+        </span>`;
+        
+        // 第四張圖表：DC, Alligator, %R  // 20 Day 趨勢指標 震盪指標極敏感型
+        chartTitles[3].innerHTML = `${symbolInfo.name}/USDT <span class="indicators-info">
+            <a href="https://tw.tradingview.com/support/solutions/43000502253/" target="_blank" class="indicator-link">DC</a>, 
+            <a href="https://tw.tradingview.com/support/solutions/43000592305/" target="_blank" class="indicator-link">Alligator</a>, 
+            <a href="https://tw.tradingview.com/support/solutions/43000501985/" target="_blank" class="indicator-link">%R</a>
+        </span>`;
     }
     const altfinsComponents = document.querySelectorAll('altfins-screener-data-component');
     altfinsComponents.forEach(component => {

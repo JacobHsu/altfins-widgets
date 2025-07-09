@@ -46,6 +46,26 @@ html, body {
             font-size: 16px;
             border-bottom: 1px solid #2a2e39;
             flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .indicators-info {
+            font-size: 12px;
+            color: #868993;
+            font-weight: 400;
+        }
+        
+        .indicator-link {
+            color: #868993;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        
+        .indicator-link:hover {
+            color: #2962FF;
+            text-decoration: underline;
         }
         .widget-wrapper {
             flex-grow: 1;
