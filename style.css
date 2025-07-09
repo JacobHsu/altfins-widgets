@@ -107,12 +107,170 @@ html, body {
     border-color: #2962FF;
 }
 
-#symbol-select {
-    background-color: #2a2e39;
+/* Custom Dropdown Styles - TradingView Style */
+.custom-dropdown {
+    position: relative;
+    display: inline-block;
+    font-family: -apple-system, BlinkMacSystemFont, 'Trebuchet MS', Roboto, Ubuntu, sans-serif;
+    z-index: 1001;
+}
+
+.dropdown-selected {
+    background: linear-gradient(180deg, #363a45 0%, #2a2e39 100%);
     color: #d1d4dc;
     border: 1px solid #434651;
-    padding: 6px 12px;
-    border-radius: 4px;
-    font-family: inherit;
-    font-size: 14px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 90px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.dropdown-selected:hover {
+    background: linear-gradient(180deg, #434651 0%, #363a45 100%);
+    border-color: #5d606b;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.dropdown-selected:active {
+    background: linear-gradient(180deg, #2a2e39 0%, #363a45 100%);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.dropdown-arrow {
+    margin-left: auto;
+    font-size: 10px;
+    color: #868993;
+    transition: all 0.2s ease;
+    font-weight: bold;
+}
+
+.dropdown-selected.open .dropdown-arrow {
+    transform: rotate(180deg);
+    color: #2962FF;
+}
+
+.dropdown-options {
+    position: absolute;
+    top: calc(100% + 2px);
+    left: 0;
+    right: 0;
+    background: linear-gradient(180deg, #2a2e39 0%, #1e222d 100%);
+    border: 1px solid #434651;
+    border-radius: 6px;
+    max-height: 240px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    z-index: 1001;
+    display: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    animation: dropdownFadeIn 0.15s ease-out;
+    pointer-events: auto;
+}
+
+@keyframes dropdownFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.dropdown-options.show {
+    display: block;
+}
+
+.dropdown-option {
+    padding: 10px 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #d1d4dc;
+    font-size: 13px;
+    font-weight: 500;
+    transition: background-color 0.15s ease, color 0.15s ease;
+    position: relative;
+    border-bottom: 1px solid transparent;
+}
+
+.dropdown-option:not(:last-child) {
+    border-bottom: 1px solid rgba(67, 70, 81, 0.3);
+}
+
+.dropdown-option:last-child {
+    border-radius: 0 0 6px 6px;
+}
+
+.dropdown-option:first-child {
+    border-radius: 6px 6px 0 0;
+}
+
+.dropdown-option:hover {
+    background: rgba(41, 98, 255, 0.1);
+    color: #ffffff;
+    border-bottom-color: transparent;
+}
+
+.dropdown-option.selected {
+    background: #2962FF;
+    color: #ffffff;
+    border-bottom-color: transparent;
+}
+
+.dropdown-option.selected:hover {
+    background: #1e53e5;
+}
+
+/* Custom Scrollbar for Dropdown */
+.dropdown-options::-webkit-scrollbar {
+    width: 6px;
+}
+
+.dropdown-options::-webkit-scrollbar-track {
+    background: #1e222d;
+    border-radius: 3px;
+}
+
+.dropdown-options::-webkit-scrollbar-thumb {
+    background: #434651;
+    border-radius: 3px;
+}
+
+.dropdown-options::-webkit-scrollbar-thumb:hover {
+    background: #5d606b;
+}
+.coin-logo {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    object-fit: cover;
+    background: #fff;
+}
+
+.dropdown-option:hover .coin-logo {
+    box-shadow: 0 2px 8px rgba(41, 98, 255, 0.4), 0 0 12px rgba(41, 98, 255, 0.2);
+    transform: scale(1.1);
+}
+
+.dropdown-option.selected .coin-logo {
+    box-shadow: 0 2px 8px rgba(41, 98, 255, 0.5), 0 0 16px rgba(41, 98, 255, 0.25);
+    transform: scale(1.05);
+}
+
+.dropdown-selected .coin-logo {
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
 }

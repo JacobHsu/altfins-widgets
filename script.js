@@ -12,6 +12,19 @@ const supportedSymbols = {
     'XAUT': 'BYBIT:XAUTUSDT'
 };
 
+// CoinMarketCap 圖標 ID 映射
+const coinMarketCapIds = {
+    'BTC': '1',      // Bitcoin
+    'ETH': '1027',   // Ethereum
+    'SOL': '5426',   // Solana
+    'XRP': '52',     // XRP
+    'BNB': '1839',   // BNB
+    'ADA': '2010',   // Cardano
+    'DOGE': '74',    // Dogecoin
+    'SUI': '20947',  // Sui
+    'XAUT': '5176'   // Tether Gold
+};
+
 function createCommonHTML() {
     const body = document.querySelector('body');
     body.innerHTML = `
@@ -19,7 +32,14 @@ function createCommonHTML() {
         <button id="btn-1h">1h</button>
         <button id="btn-4h">4h</button>
         <button id="btn-1d" class="active">1d</button>
-        <select id="symbol-select"></select>
+        <div class="custom-dropdown" id="symbol-dropdown">
+            <div class="dropdown-selected" id="dropdown-selected">
+                <img src="https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png" class="coin-logo" alt="ETH">
+                <span>ETH</span>
+                <span class="dropdown-arrow">▼</span>
+            </div>
+            <div class="dropdown-options" id="dropdown-options"></div>
+        </div>
     </div>
     <div class="dashboard-container">
         <div class="dashboard-grid">
@@ -357,19 +377,71 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btn-4h').addEventListener('click', (e) => changeInterval('240', e.target));
     document.getElementById('btn-1d').addEventListener('click', (e) => changeInterval('D', e.target));
 
-    const symbolSelect = document.getElementById('symbol-select');
+    // Setup custom dropdown
+    const dropdownSelected = document.getElementById('dropdown-selected');
+    const dropdownOptions = document.getElementById('dropdown-options');
+    
+    // Update selected display
+    const selectedImg = dropdownSelected.querySelector('img');
+    const selectedSpan = dropdownSelected.querySelector('span');
+    const coinId = coinMarketCapIds[currentSymbol.name];
+    selectedImg.src = `https://s2.coinmarketcap.com/static/img/coins/64x64/${coinId}.png`;
+    selectedImg.alt = currentSymbol.name;
+    selectedSpan.textContent = currentSymbol.name;
+    
+    // Populate dropdown options
     for (const symbol in supportedSymbols) {
-        const option = document.createElement('option');
-        option.value = symbol;
-        option.textContent = symbol;
+        const option = document.createElement('div');
+        option.className = 'dropdown-option';
+        option.dataset.value = symbol;
         if (symbol === currentSymbol.name) {
-            option.selected = true;
+            option.classList.add('selected');
         }
-        symbolSelect.appendChild(option);
+        const coinId = coinMarketCapIds[symbol];
+        option.innerHTML = `<img src="https://s2.coinmarketcap.com/static/img/coins/64x64/${coinId}.png" class="coin-logo" alt="${symbol}"> <span>${symbol}</span>`;
+        dropdownOptions.appendChild(option);
     }
 
-    symbolSelect.addEventListener('change', (e) => {
-        window.location.href = `${e.target.value}.html`;
+    // Dropdown toggle functionality
+    dropdownSelected.addEventListener('click', (e) => {
+        e.stopPropagation();
+        dropdownSelected.classList.toggle('open');
+        dropdownOptions.classList.toggle('show');
+    });
+
+    // Option selection
+    dropdownOptions.addEventListener('click', (e) => {
+        const option = e.target.closest('.dropdown-option');
+        if (option) {
+            const selectedValue = option.dataset.value;
+            
+            // Update selected display immediately for better UX
+            const selectedImg = dropdownSelected.querySelector('img');
+            const selectedSpan = dropdownSelected.querySelector('span');
+            const coinId = coinMarketCapIds[selectedValue];
+            selectedImg.src = `https://s2.coinmarketcap.com/static/img/coins/64x64/${coinId}.png`;
+            selectedImg.alt = selectedValue;
+            selectedSpan.textContent = selectedValue;
+            
+            // Update selected state
+            document.querySelectorAll('.dropdown-option').forEach(opt => opt.classList.remove('selected'));
+            option.classList.add('selected');
+            
+            // Close dropdown
+            dropdownSelected.classList.remove('open');
+            dropdownOptions.classList.remove('show');
+            
+            // Navigate to new page
+            setTimeout(() => {
+                window.location.href = `${selectedValue}.html`;
+            }, 150);
+        }
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', () => {
+        dropdownSelected.classList.remove('open');
+        dropdownOptions.classList.remove('show');
     });
 
     logTutorial(); 
