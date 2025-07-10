@@ -203,7 +203,7 @@ function updatePageContent(symbolInfo) {
         // 第四張圖表：DC, Alligator, %R  // 20 Day 趨勢指標 震盪指標極敏感型
         chartTitles[3].innerHTML = `${symbolInfo.name}/USDT <span class="indicators-info">
             <a href="https://tw.tradingview.com/support/solutions/43000502253/" target="_blank" class="indicator-link">DC</a>, 
-            <a href="https://tw.tradingview.com/support/solutions/43000592305/" target="_blank" class="indicator-link">Alligator</a>, 
+            <a href="https://tw.tradingview.com/support/solutions/43000592305/" target="_blank" class="indicator-link"><span style="color: #34B77B">Alli</span><span style="color: #FF5252">gat</span><span style="color: #2962FF">or</span></a>, 
             <a href="https://tw.tradingview.com/support/solutions/43000501985/" target="_blank" class="indicator-link">%R</a>
         </span>`;
     }
