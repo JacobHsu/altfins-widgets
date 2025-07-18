@@ -1,4 +1,4 @@
-let tvWidget1, tvWidget2, tvWidget3, tvWidget4;
+let tvWidget1, tvWidget2, tvWidget3, tvWidget4, tvWidget5;
 
 const supportedSymbols = {
     'BTC': 'BINANCE:BTCUSDT',
@@ -47,7 +47,7 @@ function createCommonHTML() {
             <div class="chart-panel">
                 <div class="chart-panel-title"> </div>
                 <div class="widget-wrapper" id="tv_chart_eth"></div>
-                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='["COIN", "SMA20_SMA50_BS_SIGNAL", "SMA20_TREND",   "X_SMA20_CROSS_SMA50"]' affiliateid='test_id'></altfins-screener-data-component>
+                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='["COIN", "SMA20_SMA50_BS_SIGNAL", "SMA20_TREND"]' affiliateid='test_id'></altfins-screener-data-component>
                 <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[  "MACD_BS_SIGNAL", "SHORT_TERM_TREND", "SHORT_TERM_TREND_CHANGE"]' affiliateid='test_id'></altfins-screener-data-component>
             </div>
 
@@ -55,7 +55,7 @@ function createCommonHTML() {
             <div class="chart-panel">
                 <div class="chart-panel-title"> </div>
                 <div class="widget-wrapper" id="tv_chart_bb"></div>
-                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "IR_BANDED_OSC",   "IR_PRICE_ABOVE_BOLLINGER_UPPER", "IR_PRICE_BELOW_BOLLINGER_LOWER"]' affiliateid='test_id'></altfins-screener-data-component>
+                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "IR_BANDED_OSC", "IR_PRICE_ABOVE_BOLLINGER_UPPER"]' affiliateid='test_id'></altfins-screener-data-component>
                 <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[  "IR_RSI14",  "MEDIUM_TERM_TREND", "MEDIUM_TERM_TREND_CHANGE"]' affiliateid='test_id'></altfins-screener-data-component>
             </div>
 
@@ -71,8 +71,16 @@ function createCommonHTML() {
             <div class="chart-panel">
                 <div class="chart-panel-title"> </div>
                 <div class="widget-wrapper" id="tv_chart_dc"></div>
-                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "BULL_POWER", "BEAR_POWER", "PRICE_CHANGE_1D", "PRICE_CHANGE_1W", "PRICE_CHANGE_1M"]' affiliateid='test_id'></altfins-screener-data-component>
-                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "IR_WILLIAMS",    "VOLUME_CHANGE","IR_UNUSUAL_VOLUME_SPIKE"]' affiliateid='test_id'></altfins-screener-data-component>
+                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "PRICE_CHANGE_1D", "PRICE_CHANGE_1W", "PRICE_CHANGE_1M"]' affiliateid='test_id'></altfins-screener-data-component>
+                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "IR_WILLIAMS",  "VOLUME_CHANGE","IR_UNUSUAL_VOLUME_SPIKE"]' affiliateid='test_id'></altfins-screener-data-component>
+            </div>
+
+            <!-- Chart Panel 5 -->
+            <div class="chart-panel">
+                <div class="chart-panel-title"> </div>
+                <div class="widget-wrapper" id="tv_chart_st"></div>
+                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "BULL_POWER", "BEAR_POWER", "PERFORMANCE"]' affiliateid='test_id'></altfins-screener-data-component>
+                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "IR_NEW_HIGH", "IR_NEW_LOW", "ATH"]' affiliateid='test_id'></altfins-screener-data-component>
             </div>
         </div>
     </div>
@@ -135,11 +143,22 @@ function createTradingViewWidgetWithKC(containerId, symbol, interval) {
 }
 
 function createTradingViewWidgetWithDC(containerId, symbol, interval) {
-    let config = getWidgetConfig(symbol, interval, true);
+    let config = getWidgetConfig(symbol, interval, false);
     config.studies = [
         "STD;Williams_Alligator",
         "STD;Donchian_Channels",
         "STD;Willams_R"
+    ];
+    config.container_id = containerId;
+    return new TradingView.widget(config);
+}
+
+function createTradingViewWidgetWithST(containerId, symbol, interval) {
+    let config = getWidgetConfig(symbol, interval, true);
+    config.studies = [
+        "STD;Supertrend",
+        "STD;Average_True_Range",
+        "STD;MA%1Cross"
     ];
     config.container_id = containerId;
     return new TradingView.widget(config);
@@ -152,11 +171,13 @@ function renderWidgets(interval) {
     document.getElementById("tv_chart_bb").innerHTML = '';
     document.getElementById("tv_chart_kc").innerHTML = '';
     document.getElementById("tv_chart_dc").innerHTML = '';
+    document.getElementById("tv_chart_st").innerHTML = '';
 
     tvWidget1 = createTradingViewWidget("tv_chart_eth", currentSymbol.pair, interval);
     tvWidget2 = createTradingViewWidgetWithBB("tv_chart_bb", currentSymbol.pair, interval);
     tvWidget3 = createTradingViewWidgetWithKC("tv_chart_kc", currentSymbol.pair, interval);
     tvWidget4 = createTradingViewWidgetWithDC("tv_chart_dc", currentSymbol.pair, interval);
+    tvWidget5 = createTradingViewWidgetWithST("tv_chart_st", currentSymbol.pair, interval);
 }
 
 function changeInterval(interval, btnElement) {
@@ -205,6 +226,13 @@ function updatePageContent(symbolInfo) {
             <a href="https://tw.tradingview.com/support/solutions/43000502253/" target="_blank" class="indicator-link">DC</a>, 
             <a href="https://tw.tradingview.com/support/solutions/43000592305/" target="_blank" class="indicator-link"><span style="color: #34B77B">Alli</span><span style="color: #FF5252">gat</span><span style="color: #2962FF">or</span></a>, 
             <a href="https://tw.tradingview.com/support/solutions/43000501985/" target="_blank" class="indicator-link">%R</a>
+        </span>`;
+
+        // 第五張圖表：Supertrend, ATR, MA
+        chartTitles[4].innerHTML = `${symbolInfo.name}/USDT <span class="indicators-info">
+            <a href="https://tw.tradingview.com/support/solutions/43000634738/" target="_blank" class="indicator-link">Supertrend</a>, 
+            <a href="https://tw.tradingview.com/support/solutions/43000501823/" target="_blank" class="indicator-link">ATR</a>, 
+            <a href="https://tw.tradingview.com/support/solutions/43000502589/" target="_blank" class="indicator-link">MA</a>
         </span>`;
     }
     const altfinsComponents = document.querySelectorAll('altfins-screener-data-component');
