@@ -1,4 +1,4 @@
-let tvWidget1, tvWidget2, tvWidget3, tvWidget4, tvWidget5, tvWidget6;
+let tvWidget1, tvWidget2, tvWidget3, tvWidget4, tvWidget5;
 
 const supportedSymbols = {
     'BTC': 'BINANCE:BTCUSDT',
@@ -82,14 +82,6 @@ function createCommonHTML() {
                 <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "BULL_POWER", "BEAR_POWER", "PERFORMANCE"]' affiliateid='test_id'></altfins-screener-data-component>
                 <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "IR_NEW_HIGH", "IR_NEW_LOW", "ATH"]' affiliateid='test_id'></altfins-screener-data-component>
             </div>
-
-            <!-- Chart Panel 6 -->
-            <div class="chart-panel">
-                <div class="chart-panel-title"> </div>
-                <div class="widget-wrapper" id="tv_chart_atr"></div>
-                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "ATR_PERCENT", "ATR", "ATR_SIGNAL"]' affiliateid='test_id'></altfins-screener-data-component>
-                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "MACD_HIST_TREND", "MACD_ZERO_CROSS_SIGNAL", "MACD_SIGNAL_CROSS_SIGNAL"]' affiliateid='test_id'></altfins-screener-data-component>
-            </div>
         </div>
     </div>
     `;
@@ -172,16 +164,6 @@ function createTradingViewWidgetWithST(containerId, symbol, interval) {
     return new TradingView.widget(config);
 }
 
-function createTradingViewWidgetWithATR(containerId, symbol, interval) {
-    let config = getWidgetConfig(symbol, interval, false);
-    config.studies = [
-        "STD;Average_True_Range",
-        "STD;MACD"
-    ];
-    config.container_id = containerId;
-    return new TradingView.widget(config);
-}
-
 function renderWidgets(interval) {
     const currentSymbol = getSelectedSymbol();
 
@@ -190,14 +172,12 @@ function renderWidgets(interval) {
     document.getElementById("tv_chart_kc").innerHTML = '';
     document.getElementById("tv_chart_dc").innerHTML = '';
     document.getElementById("tv_chart_st").innerHTML = '';
-    document.getElementById("tv_chart_atr").innerHTML = '';
 
     tvWidget1 = createTradingViewWidget("tv_chart_eth", currentSymbol.pair, interval);
     tvWidget2 = createTradingViewWidgetWithBB("tv_chart_bb", currentSymbol.pair, interval);
     tvWidget3 = createTradingViewWidgetWithKC("tv_chart_kc", currentSymbol.pair, interval);
     tvWidget4 = createTradingViewWidgetWithDC("tv_chart_dc", currentSymbol.pair, interval);
     tvWidget5 = createTradingViewWidgetWithST("tv_chart_st", currentSymbol.pair, interval);
-    tvWidget6 = createTradingViewWidgetWithATR("tv_chart_atr", currentSymbol.pair, interval);
 }
 
 function changeInterval(interval, btnElement) {
@@ -253,12 +233,6 @@ function updatePageContent(symbolInfo) {
             <a href="https://tw.tradingview.com/support/solutions/43000634738/" target="_blank" class="indicator-link">Supertrend</a>, 
             <a href="https://tw.tradingview.com/support/solutions/43000501823/" target="_blank" class="indicator-link">ATR</a>, 
             <a href="https://tw.tradingview.com/support/solutions/43000502589/" target="_blank" class="indicator-link">MA</a>
-        </span>`;
-
-        // 第六張圖表：ATR, MACD
-        chartTitles[5].innerHTML = `${symbolInfo.name}/USDT <span class="indicators-info">
-            <a href="https://tw.tradingview.com/support/solutions/43000501823/" target="_blank" class="indicator-link">ATR</a>, 
-            <a href="https://tw.tradingview.com/support/solutions/43000502344/" target="_blank" class="indicator-link">MACD</a>
         </span>`;
     }
     const altfinsComponents = document.querySelectorAll('altfins-screener-data-component');

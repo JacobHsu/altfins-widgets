@@ -23,8 +23,8 @@ html, body {
         .dashboard-grid {
             flex-grow: 1;
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-template-rows: repeat(2, 1fr);
+            grid-template-columns: 1fr 1fr 1fr 1fr 1.2fr;
+            grid-template-rows: 1fr;
             gap: 12px;
             min-height: calc(100vh - 80px);
             width: 100%;
