@@ -1,4 +1,4 @@
-let tvWidget1, tvWidget2, tvWidget3, tvWidget4, tvWidget5;
+let tvWidget1, tvWidget2, tvWidget3, tvWidget4, tvWidget5, tvWidget6;
 
 const supportedSymbols = {
     'BTC': 'BINANCE:BTCUSDT',
@@ -82,6 +82,14 @@ function createCommonHTML() {
                 <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "BULL_POWER", "BEAR_POWER", "PERFORMANCE"]' affiliateid='test_id'></altfins-screener-data-component>
                 <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "IR_NEW_HIGH", "IR_NEW_LOW", "ATH"]' affiliateid='test_id'></altfins-screener-data-component>
             </div>
+
+            <!-- Chart Panel 6 -->
+            <div class="chart-panel">
+                <div class="chart-panel-title"> </div>
+                <div class="widget-wrapper" id="tv_chart_atr"></div>
+                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "ATR_PERCENT", "ATR", "ATR_SIGNAL"]' affiliateid='test_id'></altfins-screener-data-component>
+                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "MACD_HIST_TREND", "MACD_ZERO_CROSS_SIGNAL", "MACD_SIGNAL_CROSS_SIGNAL"]' affiliateid='test_id'></altfins-screener-data-component>
+            </div>
         </div>
     </div>
     `;
@@ -164,6 +172,16 @@ function createTradingViewWidgetWithST(containerId, symbol, interval) {
     return new TradingView.widget(config);
 }
 
+function createTradingViewWidgetWithATR(containerId, symbol, interval) {
+    let config = getWidgetConfig(symbol, interval, false);
+    config.studies = [
+        "STD;Average_True_Range",
+        "STD;MACD"
+    ];
+    config.container_id = containerId;
+    return new TradingView.widget(config);
+}
+
 function renderWidgets(interval) {
     const currentSymbol = getSelectedSymbol();
 
@@ -172,12 +190,14 @@ function renderWidgets(interval) {
     document.getElementById("tv_chart_kc").innerHTML = '';
     document.getElementById("tv_chart_dc").innerHTML = '';
     document.getElementById("tv_chart_st").innerHTML = '';
+    document.getElementById("tv_chart_atr").innerHTML = '';
 
     tvWidget1 = createTradingViewWidget("tv_chart_eth", currentSymbol.pair, interval);
     tvWidget2 = createTradingViewWidgetWithBB("tv_chart_bb", currentSymbol.pair, interval);
     tvWidget3 = createTradingViewWidgetWithKC("tv_chart_kc", currentSymbol.pair, interval);
     tvWidget4 = createTradingViewWidgetWithDC("tv_chart_dc", currentSymbol.pair, interval);
     tvWidget5 = createTradingViewWidgetWithST("tv_chart_st", currentSymbol.pair, interval);
+    tvWidget6 = createTradingViewWidgetWithATR("tv_chart_atr", currentSymbol.pair, interval);
 }
 
 function changeInterval(interval, btnElement) {
@@ -233,6 +253,12 @@ function updatePageContent(symbolInfo) {
             <a href="https://tw.tradingview.com/support/solutions/43000634738/" target="_blank" class="indicator-link">Supertrend</a>, 
             <a href="https://tw.tradingview.com/support/solutions/43000501823/" target="_blank" class="indicator-link">ATR</a>, 
             <a href="https://tw.tradingview.com/support/solutions/43000502589/" target="_blank" class="indicator-link">MA</a>
+        </span>`;
+
+        // 第六張圖表：ATR, MACD
+        chartTitles[5].innerHTML = `${symbolInfo.name}/USDT <span class="indicators-info">
+            <a href="https://tw.tradingview.com/support/solutions/43000501823/" target="_blank" class="indicator-link">ATR</a>, 
+            <a href="https://tw.tradingview.com/support/solutions/43000502344/" target="_blank" class="indicator-link">MACD</a>
         </span>`;
     }
     const altfinsComponents = document.querySelectorAll('altfins-screener-data-component');
@@ -333,6 +359,15 @@ const indicatorDefinitions = [
             "%R 讀數在 -80 以下表示超賣狀態。",
             "與RSI一樣，尋找價格與%R之間的背離可以提供強烈的反轉信號。"
         ]
+    },
+    {
+        name: "平均真實波幅 (ATR - Average True Range)",
+        description: "ATR 主要用來衡量市場的波動性，它顯示的是特定時期內價格的平均波動範圍。ATR 本身不提供趨勢方向。",
+        usage: [
+            "ATR 上升，表示市場波動加劇，可能預示著趨勢的開始或現有趨勢的加速。",
+            "ATR 下降，表示市場波動減弱，進入盤整或趨勢放緩。",
+            "交易者常使用 ATR 來設定止損位，例如將止損設在進場價位的 1.5 或 2 倍 ATR 之外。"
+        ]
     }
 ];
 
@@ -381,6 +416,34 @@ const combinedScenarios = [
             "操作建議：這可以視為趨勢可能啟動的 %c早期警報%c。交易者應密切關注，一旦價格隨後也突破 BB 上軌，便可確認趨勢，並考慮進場。"
         ],
         styles: ['font-weight: bold; color: #4ECDC4', 'font-weight: normal', 'font-weight: bold; color: #FF6B6B', 'font-weight: normal', 'font-weight: bold; color: #F9A825', 'font-weight: normal', 'font-weight: bold; color: #2962FF', 'font-weight: normal']
+    },
+    {
+        title: "組合判斷：ATR + MACD 預測趨勢與波動",
+        explanation: [
+            "當 %cATR 指標持續上升%c，表示市場 %c波動性正在加劇%c。這通常發生在趨勢即將開始或反轉時。",
+            "如果此時 %cMACD 發生黃金交叉%c（快線向上穿過慢線），這是一個強烈的 %c看漲信號%c，暗示在波動加劇的背景下，上漲趨勢可能形成。",
+            "反之，如果 %cMACD 發生死亡交叉%c，則預示著在劇烈波動下，下跌趨勢可能來臨。",
+            "操作建議：交易者可以利用 ATR 來設定止損位。例如，在買入後，將止損設置在 `進場價 - 2 * ATR` 的位置，以應對市場波動。"
+        ],
+        styles: ['font-weight: bold; color: #FF6B6B', 'font-weight: normal', 'font-weight: bold; color: #F9A825', 'font-weight: normal', 'font-weight: bold; color: #2962FF', 'font-weight: normal', 'font-weight: bold; color: #4ECDC4', 'font-weight: normal', 'font-weight: bold; color: #FF6B6B', 'font-weight: normal']
+    },
+    {
+        title: "組合判斷：ATR + 移動平均線 (MA) 過濾盤整行情",
+        explanation: [
+            "在橫盤整理的市場中，價格會頻繁地穿越移動平均線，產生許多假的交易信號。",
+            "此時可以觀察 %cATR 指標%c。如果 ATR 處於 %c低水平且持續下降%c，這確認了市場正處於低波動的盤整狀態。",
+            "操作建議：在低 ATR 環境下，應避免追逐由 MA 交叉產生的突破信號，因為這些很可能是陷阱。等待 ATR 開始顯著上升，再結合 MA 的方向進行交易會更可靠。"
+        ],
+        styles: ['font-weight: bold; color: #FF6B6B', 'font-weight: normal', 'font-weight: bold; color: #F9A825', 'font-weight: normal']
+    },
+    {
+        title: "組合判斷：ATR + RSI 判斷趨勢動能",
+        explanation: [
+            "當 %cRSI 進入超買區 (>70) 或超賣區 (<30)%c 時，通常表示趨勢可能暫停或反轉。",
+            "但如果此時 %cATR 指標同時也在飆升%c，這意味著市場的 %c波動性和動能極強%c。",
+            "操作建議：這種情況下，趨勢很可能會延續，而不是立即反轉。例如，RSI 超買 + ATR 飆升，可能不是做空的好時機，而是趨勢極強的表現。交易者應等待 ATR 開始回落，再考慮根據 RSI 的信號進行逆勢操作。"
+        ],
+        styles: ['font-weight: bold; color: #4ECDC4', 'font-weight: normal', 'font-weight: bold; color: #FF6B6B', 'font-weight: normal', 'font-weight: bold; color: #2962FF', 'font-weight: normal']
     }
 ];
 
