@@ -55,16 +55,16 @@ function createCommonHTML() {
             <div class="chart-panel">
                 <div class="chart-panel-title"> </div>
                 <div class="widget-wrapper" id="tv_chart_bb"></div>
-                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "IR_BANDED_OSC", "IR_PRICE_ABOVE_BOLLINGER_UPPER"]' affiliateid='test_id'></altfins-screener-data-component>
-                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[  "IR_RSI14",  "MEDIUM_TERM_TREND", "MEDIUM_TERM_TREND_CHANGE"]' affiliateid='test_id'></altfins-screener-data-component>
+                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "IR_BANDED_OSC", "IR_OSCILLATOR_RATING", "IR_RSI14"]' affiliateid='test_id'></altfins-screener-data-component>
+                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "MEDIUM_TERM_TREND", "MEDIUM_TERM_TREND_CHANGE"]' affiliateid='test_id'></altfins-screener-data-component>
             </div>
 
             <!-- Chart Panel 3 -->
             <div class="chart-panel">
                 <div class="chart-panel-title"> </div>
                 <div class="widget-wrapper" id="tv_chart_kc"></div>
-                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "IR_OSCILLATOR_RATING", "IR_STOCH", "IR_STOCH_SLOW"]' affiliateid='test_id'></altfins-screener-data-component>
-                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "IR_CCI20",  "LONG_TERM_TREND", "LONG_TERM_TREND_CHANGE"]' affiliateid='test_id'></altfins-screener-data-component>
+                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[  "IR_CCI20", "IR_STOCH", "IR_STOCH_SLOW"]' affiliateid='test_id'></altfins-screener-data-component>
+                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[  "LONG_TERM_TREND", "LONG_TERM_TREND_CHANGE"]' affiliateid='test_id'></altfins-screener-data-component>
             </div>
 
             <!-- Chart Panel 4 -->
@@ -72,7 +72,7 @@ function createCommonHTML() {
                 <div class="chart-panel-title"> </div>
                 <div class="widget-wrapper" id="tv_chart_dc"></div>
                 <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "PRICE_CHANGE_1D", "PRICE_CHANGE_1W", "PRICE_CHANGE_1M"]' affiliateid='test_id'></altfins-screener-data-component>
-                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "IR_WILLIAMS",  "VOLUME_CHANGE","IR_UNUSUAL_VOLUME_SPIKE"]' affiliateid='test_id'></altfins-screener-data-component>
+                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "IR_WILLIAMS",  "VOLUME_CHANGE"]' affiliateid='test_id'></altfins-screener-data-component>
             </div>
 
             <!-- Chart Panel 5 -->
