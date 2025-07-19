@@ -294,3 +294,36 @@ html, body {
 .dropdown-selected .coin-logo {
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
 }
+
+@media (max-width: 768px) {
+    html, body {
+        overflow: auto; /* Allow scrolling */
+    }
+
+    .dashboard-container {
+        height: auto; /* Let container grow with content */
+    }
+
+    .dashboard-grid {
+        display: block; /* Simple vertical stacking */
+        overflow: visible;
+        min-height: unset;
+    }
+
+    .chart-panel {
+        height: 840px !important; /* Override inline style from widget */
+        margin-bottom: 12px; /* Space between panels */
+    }
+
+    altfins-screener-data-component {
+        display: none;
+    }
+
+    .widget-wrapper {
+        min-height: 0;
+    }
+
+    .indicators-info {
+        display: none;
+    }
+}
