@@ -387,6 +387,16 @@ const indicatorDefinitions = [
             "ATR 下降，表示市場波動減弱，進入盤整或趨勢放緩。",
             "交易者常使用 ATR 來設定止損位，例如將止損設在進場價位的 1.5 或 2 倍 ATR 之外。"
         ]
+    },
+    {
+        name: "超級趨勢 (Supertrend)",
+        description: "Supertrend 是一個基於 ATR 的趨勢跟隨指標，它在圖表上顯示為動態的支撐和阻力線。當價格在 Supertrend 線上方時顯示為綠色（看漲），在下方時顯示為紅色（看跌）。",
+        usage: [
+            "當價格突破 Supertrend 線並轉為綠色時，是強烈的買入信號。",
+            "當價格跌破 Supertrend 線並轉為紅色時，是強烈的賣出信號。",
+            "Supertrend 線可以作為動態的止損位，綠色趨勢中以 Supertrend 線作為止損支撐。",
+            "在強勢趨勢中，價格往往會沿著 Supertrend 線運行，很少跌破或突破。"
+        ]
     }
 ];
 
@@ -463,6 +473,72 @@ const combinedScenarios = [
             "操作建議：這種情況下，趨勢很可能會延續，而不是立即反轉。例如，RSI 超買 + ATR 飆升，可能不是做空的好時機，而是趨勢極強的表現。交易者應等待 ATR 開始回落，再考慮根據 RSI 的信號進行逆勢操作。"
         ],
         styles: ['font-weight: bold; color: #4ECDC4', 'font-weight: normal', 'font-weight: bold; color: #FF6B6B', 'font-weight: normal', 'font-weight: bold; color: #2962FF', 'font-weight: normal']
+    },
+    {
+        title: "組合判斷：Supertrend + MACD 確認趨勢強度",
+        explanation: [
+            "當 %cSupertrend 轉為綠色%c（價格突破 Supertrend 線）時，這是一個強烈的趨勢信號。",
+            "如果同時 %cMACD 也出現黃金交叉%c（快線向上穿越慢線），這雙重確認了上升趨勢的開始。",
+            "操作建議：這是非常可靠的買入時機。Supertrend 提供趨勢方向，MACD 提供動量確認。可以在 Supertrend 線附近設置止損，享受趨勢帶來的利潤。"
+        ],
+        styles: ['font-weight: bold; color: #4ECDC4', 'font-weight: normal', 'font-weight: bold; color: #2962FF', 'font-weight: normal']
+    },
+    {
+        title: "組合判斷：Supertrend + RSI 避免假突破",
+        explanation: [
+            "當 %cSupertrend 剛轉為綠色%c 時，如果 %cRSI 已經處於超買區 (>70)%c，這可能是一個假突破的警告。",
+            "這種情況表明價格可能已經漲得太快，缺乏持續上漲的動能。",
+            "操作建議：等待 RSI 回落到中性區域（30-70）後，再考慮跟隨 Supertrend 的信號進場。或者採用較小的倉位，並設置較緊的止損。"
+        ],
+        styles: ['font-weight: bold; color: #4ECDC4', 'font-weight: normal', 'font-weight: bold; color: #FF6B6B', 'font-weight: normal']
+    },
+    {
+        title: "組合判斷：Supertrend + 移動平均線 (MA) 多重趨勢確認",
+        explanation: [
+            "當 %cSupertrend 為綠色且價格位於 20 日和 50 日移動平均線之上%c 時，這是多重趨勢確認。",
+            "如果 %c20 日 MA 也位於 50 日 MA 之上%c，形成完美的多頭排列，趨勢極其強勁。",
+            "操作建議：這是最安全的趨勢跟隨機會。可以在任何回調至 Supertrend 線或 20 日 MA 附近時加倉。止損可設在 50 日 MA 下方。"
+        ],
+        styles: ['font-weight: bold; color: #4ECDC4', 'font-weight: normal', 'font-weight: bold; color: #2962FF', 'font-weight: normal']
+    },
+    {
+        title: "組合判斷：Supertrend + 布林通道 (BB) 判斷突破品質",
+        explanation: [
+            "當價格 %c突破布林通道上軌且 Supertrend 同時轉綠%c 時，這是高品質突破的強烈信號。",
+            "如果 %cSupertrend 轉綠但價格仍在布林通道內%c，可能只是短期反彈，而非真正的趨勢反轉。",
+            "操作建議：等待價格同時滿足兩個條件：突破 BB 上軌 + Supertrend 轉綠，這樣的突破更可靠。可以用 Supertrend 線作為移動止損。"
+        ],
+        styles: ['font-weight: bold; color: #4ECDC4', 'font-weight: normal', 'font-weight: bold; color: #FF6B6B', 'font-weight: normal']
+    },
+    {
+        title: "組合判斷：Supertrend + ATR 優化進場時機",
+        explanation: [
+            "當 %cSupertrend 轉為綠色%c 時，觀察 %cATR 的水平%c 可以幫助判斷進場時機。",
+            "如果 %cATR 處於低水平%c，表示市場波動較小，突破後的趨勢可能更持久但利潤空間有限。",
+            "如果 %cATR 處於高水平%c，表示市場波動劇烈，趨勢可能很強但也更容易出現回調。",
+            "操作建議：低 ATR 環境下可以用較大倉位、較寬止損；高 ATR 環境下應該用較小倉位、較緊止損，並準備應對更大的價格波動。"
+        ],
+        styles: ['font-weight: bold; color: #4ECDC4', 'font-weight: normal', 'font-weight: bold; color: #FF6B6B', 'font-weight: normal', 'font-weight: bold; color: #2962FF', 'font-weight: normal', 'font-weight: bold; color: #F9A825', 'font-weight: normal']
+    },
+    {
+        title: "組合判斷：Supertrend + Parabolic SAR 雙重趨勢確認",
+        explanation: [
+            "當 %cSupertrend 轉為綠色且 SAR 點位於價格下方%c 時，這是雙重趨勢確認的強烈信號。",
+            "兩個指標都是趨勢跟隨工具，但計算方式不同：%cSupertrend 基於 ATR，SAR 基於加速因子%c。",
+            "如果 %c兩個指標同時給出相同的趨勢信號%c，這大大提高了趨勢判斷的可靠性。",
+            "操作建議：當兩個指標都確認上升趨勢時，可以更有信心地持有多頭部位。止損可設在兩個指標中較高的那一個，提供雙重保護。當任一指標轉向時，應考慮減倉或平倉。"
+        ],
+        styles: ['font-weight: bold; color: #4ECDC4', 'font-weight: normal', 'font-weight: bold; color: #2962FF', 'font-weight: normal', 'font-weight: bold; color: #F9A825', 'font-weight: normal']
+    },
+    {
+        title: "組合判斷：Supertrend vs SAR 訊號分歧時的處理",
+        explanation: [
+            "當 %cSupertrend 和 SAR 給出不同信號%c 時（例如 Supertrend 綠色但 SAR 在價格上方），這通常表示市場處於轉折期。",
+            "這種分歧往往發生在 %c趨勢即將反轉或進入盤整%c 的階段。",
+            "觀察哪個指標先改變方向，通常 %cSAR 對短期變化更敏感%c，而 %cSupertrend 對中期趨勢更穩定%c。",
+            "操作建議：訊號分歧時應該降低倉位，等待兩個指標重新同步。如果 SAR 先轉向，可能是短期調整；如果 Supertrend 先轉向，可能是較大級別的趨勢變化。"
+        ],
+        styles: ['font-weight: bold; color: #FF6B6B', 'font-weight: normal', 'font-weight: bold; color: #F9A825', 'font-weight: normal', 'font-weight: bold; color: #4ECDC4', 'font-weight: normal', 'font-weight: bold; color: #2962FF', 'font-weight: normal']
     }
 ];
 
