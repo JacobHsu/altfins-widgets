@@ -184,17 +184,62 @@ function changeInterval(interval, btnElement) {
     renderWidgets(interval);
     document.querySelectorAll('.interval-buttons button').forEach(btn => btn.classList.remove('active'));
     btnElement.classList.add('active');
+    
+    // 更新 hash 來反映當前的時間間隔
+    const intervalMap = {
+        '60': '1H',
+        '240': '4H',
+        'D': '1D'
+    };
+    const hashInterval = intervalMap[interval];
+    if (hashInterval) {
+        window.location.hash = hashInterval;
+    }
 }
 
 function getSelectedSymbol() {
+    // 檢查 URL 路徑 (如 /BTC 或 /BTC/1H)
     const path = window.location.pathname;
-    const page = path.split("/").pop();
+    const pathParts = path.split("/").filter(part => part !== '');
+    
+    // 處理 GitHub Pages 路徑 (如 /altfins-widgets/BTC)
+    const symbolIndex = pathParts[0] === 'altfins-widgets' ? 1 : 0;
+    
+    if (pathParts.length > symbolIndex) {
+        const symbol = pathParts[symbolIndex].toUpperCase();
+        if (supportedSymbols[symbol]) {
+            return { name: symbol, pair: supportedSymbols[symbol] };
+        }
+    }
+    
+    // 處理 BTC.html 格式的路徑
+    const page = pathParts[pathParts.length - 1] || '';
     const symbol = page.replace('.html', '').toUpperCase();
 
     if (supportedSymbols[symbol]) {
         return { name: symbol, pair: supportedSymbols[symbol] };
     }
     return { name: 'ETH', pair: 'BINANCE:ETHUSDT' };
+}
+
+function getIntervalFromUrl() {
+    const hash = window.location.hash.substring(1); // 移除 #
+    if (hash) {
+        const intervalPart = hash.toUpperCase();
+        if (['1H', '4H', '1D'].includes(intervalPart)) {
+            switch (intervalPart) {
+                case '1H':
+                    return { interval: '60', buttonId: 'btn-1h' };
+                case '4H':
+                    return { interval: '240', buttonId: 'btn-4h' };
+                case '1D':
+                    return { interval: 'D', buttonId: 'btn-1d' };
+            }
+        }
+    }
+    
+    // 默認返回 1D
+    return { interval: 'D', buttonId: 'btn-1d' };
 }
 
 function updatePageContent(symbolInfo) {
@@ -457,8 +502,14 @@ function logTutorial() {
 document.addEventListener('DOMContentLoaded', () => {
     createCommonHTML();
     const currentSymbol = getSelectedSymbol();
+    const urlInterval = getIntervalFromUrl();
+    
     updatePageContent(currentSymbol);
-    renderWidgets('D');
+    renderWidgets(urlInterval.interval);
+
+    // 設置正確的按鈕狀態
+    document.querySelectorAll('.interval-buttons button').forEach(btn => btn.classList.remove('active'));
+    document.getElementById(urlInterval.buttonId).classList.add('active');
 
     document.getElementById('btn-1h').addEventListener('click', (e) => changeInterval('60', e.target));
     document.getElementById('btn-4h').addEventListener('click', (e) => changeInterval('240', e.target));
@@ -536,4 +587,17 @@ document.addEventListener('DOMContentLoaded', () => {
         console.clear();
         logTutorial();
     }, 30000);
+
+    // 監聽 hash 變化
+    window.addEventListener('hashchange', () => {
+        const currentSymbol = getSelectedSymbol();
+        const urlInterval = getIntervalFromUrl();
+        
+        updatePageContent(currentSymbol);
+        renderWidgets(urlInterval.interval);
+        
+        // 設置正確的按鈕狀態
+        document.querySelectorAll('.interval-buttons button').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(urlInterval.buttonId).classList.add('active');
+    });
 });

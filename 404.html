@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecting...</title>
+    <script>
+        // GitHub Pages URL 重定向處理 (簡化版本)
+        (function() {
+            const path = window.location.pathname;
+            const pathParts = path.split('/').filter(part => part !== '');
+            
+            // 支援的幣種
+            const supportedSymbols = ['BTC', 'ETH', 'SOL', 'XRP', 'BNB', 'ADA', 'DOGE', 'SUI', 'XAUT'];
+            
+            // 獲取基礎路徑 (對於 GitHub Pages 項目)
+            const basePath = pathParts[0] === 'altfins-widgets' ? '/altfins-widgets' : '';
+            const symbolIndex = basePath ? 1 : 0;
+            
+            // 檢查是否是 /SYMBOL/INTERVAL 格式 (如 /BTC/1H)
+            if (pathParts.length >= symbolIndex + 2) {
+                const symbol = pathParts[symbolIndex].toUpperCase();
+                const interval = pathParts[symbolIndex + 1].toUpperCase();
+                
+                if (supportedSymbols.includes(symbol) && ['1H', '4H', '1D'].includes(interval)) {
+                    // 重定向到簡化格式: BTC.html#1H
+                    window.location.replace(`${basePath}/${symbol}.html#${interval}${window.location.search}`);
+                    return;
+                }
+            }
+            
+            // 檢查是否是 /SYMBOL 格式 (如 /BTC)
+            if (pathParts.length >= symbolIndex + 1) {
+                const symbol = pathParts[symbolIndex].toUpperCase();
+                if (supportedSymbols.includes(symbol)) {
+                    window.location.replace(`${basePath}/${symbol}.html${window.location.search}${window.location.hash}`);
+                    return;
+                }
+            }
+            
+            // 其他情況重定向到首頁
+            window.location.replace(`${basePath}/index.html${window.location.search}${window.location.hash}`);
+        })();
+    </script>
+</head>
+<body>
+    <p>Redirecting...</p>
+</body>
+</html>
