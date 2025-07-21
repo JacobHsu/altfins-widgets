@@ -47,7 +47,7 @@ function createCommonHTML() {
             <div class="chart-panel">
                 <div class="chart-panel-title"> </div>
                 <div class="widget-wrapper" id="tv_chart_eth"></div>
-                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "MACD_BS_SIGNAL", "SMA20_SMA50_BS_SIGNAL", "SMA20_TREND"]' affiliateid='test_id'></altfins-screener-data-component>
+                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "MACD_BS_SIGNAL", "SMA20_SMA50_BS_SIGNAL"]' affiliateid='test_id'></altfins-screener-data-component>
                 <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "LONG_TERM_TREND", "LONG_TERM_TREND_CHANGE"]' affiliateid='test_id'></altfins-screener-data-component>
             </div>
 
@@ -301,7 +301,7 @@ function updatePageContent(symbolInfo) {
             <a href="https://tw.tradingview.com/support/solutions/43000502589/" target="_blank" class="indicator-link">MA</a>
         </span>`;
 
-        // 第六張圖表：Linear Regression, Zig Zag, Money Flow
+        // 第六張圖表：Linear Regression, Zig Zag, Money Flow Index
         chartTitles[5].innerHTML = `${symbolInfo.name}/USDT <span class="indicators-info">
             <a href="https://tw.tradingview.com/support/solutions/43000644936/" target="_blank" class="indicator-link">LinReg</a>, 
             <a href="https://tw.tradingview.com/support/solutions/43000591664/" target="_blank" class="indicator-link">Zig Zag</a>, 
@@ -434,6 +434,36 @@ const indicatorDefinitions = [
             "當價格跌破 Supertrend 線並轉為紅色時，是強烈的賣出信號。",
             "Supertrend 線可以作為動態的止損位，綠色趨勢中以 Supertrend 線作為止損支撐。",
             "在強勢趨勢中，價格往往會沿著 Supertrend 線運行，很少跌破或突破。"
+        ]
+    },
+    {
+        name: "線性回歸 (Linear Regression)",
+        description: "線性回歸指標使用統計學方法來識別價格趨勢的方向和強度。它通過計算一段時間內價格的最佳擬合直線來顯示趨勢，並可以預測未來的價格走向。",
+        usage: [
+            "當價格位於線性回歸線上方時，表示上升趨勢較強；位於下方時表示下降趨勢較強。",
+            "線性回歸線的斜率可以判斷趨勢的強度：斜率越陡，趨勢越強。",
+            "價格偏離線性回歸線過遠時，通常會有回歸的傾向，可作為反轉交易的參考。",
+            "結合線性回歸通道使用，可以識別支撐和阻力水平，以及潛在的突破點。"
+        ]
+    },
+    {
+        name: "之字轉向 (Zig Zag)",
+        description: "Zig Zag 指標通過過濾掉小幅度的價格波動，只顯示重要的價格轉折點，幫助交易者識別主要的趨勢變化和波段高低點。",
+        usage: [
+            "Zig Zag 可以清晰地顯示市場的主要波段，幫助識別趨勢的轉折點。",
+            "通過連接 Zig Zag 的高點和低點，可以繪製趨勢線和通道，識別支撐阻力。",
+            "Zig Zag 有助於識別圖表形態，如頭肩頂、雙頂雙底等經典技術分析形態。",
+            "注意 Zig Zag 是滯後指標，最後一段線條會隨價格變化而重繪，不適合實時交易決策。"
+        ]
+    },
+    {
+        name: "資金流指標 (Money Flow Index - MFI)",
+        description: "MFI 是一個成交量加權的動量指標，結合價格和成交量來衡量資金流入和流出的強度。它類似於 RSI，但考慮了成交量因素，範圍在 0-100 之間。",
+        usage: [
+            "MFI > 80 通常被視為超買區，可能出現回調；MFI < 20 通常被視為超賣區，可能出現反彈。",
+            "MFI 與價格的背離（例如，價格創新高但 MFI 下降）是趨勢可能反轉的強烈信號。",
+            "MFI 的優勢在於同時考慮價格和成交量，比單純的價格指標更能反映市場的真實供需狀況。",
+            "當 MFI 從超賣區向上突破 20 時是買入信號；從超買區向下跌破 80 時是賣出信號。"
         ]
     }
 ];
@@ -631,6 +661,52 @@ const combinedScenarios = [
             "操作建議：使用 Supertrend 確定大方向，用 KD 優化進場時機。這種多時間框架的組合可以提高勝率並改善風險回報比。"
         ],
         styles: ['font-weight: bold; color: #4ECDC4', 'font-weight: normal', 'font-weight: bold; color: #2962FF', 'font-weight: normal', 'font-weight: bold; color: #F9A825', 'font-weight: normal']
+    },
+    {
+        title: "組合判斷：Linear Regression + Zig Zag 趨勢確認",
+        explanation: [
+            "當 %c線性回歸線呈現明顯上升斜率%c 時，表示長期趨勢向上。此時觀察 %cZig Zag 指標的最新轉折點%c。",
+            "如果 %cZig Zag 剛從低點轉向上升%c，且價格突破前一個 Zig Zag 高點，這是強烈的趨勢確認信號。",
+            "操作建議：線性回歸提供趨勢方向，Zig Zag 提供具體的進場點位。兩者結合可以在趨勢初期捕捉到較好的入場機會。"
+        ],
+        styles: ['font-weight: bold; color: #4ECDC4', 'font-weight: normal', 'font-weight: bold; color: #2962FF', 'font-weight: normal', 'font-weight: bold; color: #F9A825', 'font-weight: normal']
+    },
+    {
+        title: "組合判斷：MFI + RSI 資金動能分析",
+        explanation: [
+            "當 %cRSI 顯示超賣狀態 (<30)%c 但 %cMFI 開始從超賣區回升%c 時，表示雖然價格下跌但資金流入開始增強。",
+            "這種情況通常預示著 %c底部即將形成%c，是潛在的反轉信號。",
+            "操作建議：MFI 回升確認資金面支撐，RSI 超賣提供技術面機會。兩者結合是左側交易的重要參考，但仍需設置合理止損。"
+        ],
+        styles: ['font-weight: bold; color: #FF6B6B', 'font-weight: normal', 'font-weight: bold; color: #4ECDC4', 'font-weight: normal', 'font-weight: bold; color: #2962FF', 'font-weight: normal']
+    },
+    {
+        title: "組合判斷：Linear Regression + MFI 趨勢品質評估",
+        explanation: [
+            "當價格沿著 %c線性回歸線上升%c 且 %cMFI 保持在高位%c 時，表示趨勢有充足的資金支撐。",
+            "如果 %c價格創新高但 MFI 開始下降%c，可能預示著趨勢動能衰竭，需要警惕頂部形成。",
+            "操作建議：線性回歸確認趨勢方向，MFI 評估趨勢品質。資金流與趨勢同步是健康上漲的重要特徵。"
+        ],
+        styles: ['font-weight: bold; color: #4ECDC4', 'font-weight: normal', 'font-weight: bold; color: #2962FF', 'font-weight: normal', 'font-weight: bold; color: #FF6B6B', 'font-weight: normal']
+    },
+    {
+        title: "組合判斷：Zig Zag + MFI 波段交易策略",
+        explanation: [
+            "利用 %cZig Zag 識別主要的波段高低點%c，結合 %cMFI 判斷每個波段的資金流向強度%c。",
+            "在 %cZig Zag 低點附近且 MFI 從超賣區回升%c 時進場做多；在 %cZig Zag 高點附近且 MFI 進入超買區%c 時考慮獲利了結。",
+            "操作建議：Zig Zag 提供波段結構，MFI 提供資金確認。這種組合特別適合中期波段交易，可以提高進出場的精確度。"
+        ],
+        styles: ['font-weight: bold; color: #4ECDC4', 'font-weight: normal', 'font-weight: bold; color: #2962FF', 'font-weight: normal', 'font-weight: bold; color: #F9A825', 'font-weight: normal', 'font-weight: bold; color: #FF6B6B', 'font-weight: normal']
+    },
+    {
+        title: "組合判斷：Linear Regression + Zig Zag + MFI 三重確認",
+        explanation: [
+            "最強的交易信號出現在三個指標同時確認時：%c線性回歸線向上 + Zig Zag 轉折向上 + MFI 健康回升%c。",
+            "這種 %c三重確認%c 表示趨勢、結構和資金面都支持上漲，是高勝率的交易機會。",
+            "反之，當 %c三個指標都轉向看跌%c 時，應該果斷減倉或做空。",
+            "操作建議：等待三重確認可以大幅提高交易勝率，但機會相對較少。可以用較大倉位參與這種高確定性的交易機會。"
+        ],
+        styles: ['font-weight: bold; color: #4ECDC4', 'font-weight: normal', 'font-weight: bold; color: #F9A825', 'font-weight: normal', 'font-weight: bold; color: #FF6B6B', 'font-weight: normal']
     }
 ];
 
