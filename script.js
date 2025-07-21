@@ -47,8 +47,8 @@ function createCommonHTML() {
             <div class="chart-panel">
                 <div class="chart-panel-title"> </div>
                 <div class="widget-wrapper" id="tv_chart_eth"></div>
-                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='["COIN", "SMA20_SMA50_BS_SIGNAL", "SMA20_TREND"]' affiliateid='test_id'></altfins-screener-data-component>
-                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[  "MACD_BS_SIGNAL", "SHORT_TERM_TREND", "SHORT_TERM_TREND_CHANGE"]' affiliateid='test_id'></altfins-screener-data-component>
+                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "COIN", "SMA20_SMA50_BS_SIGNAL", "SMA20_TREND"]' affiliateid='test_id'></altfins-screener-data-component>
+                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "MACD_BS_SIGNAL", "LONG_TERM_TREND", "LONG_TERM_TREND_CHANGE"]' affiliateid='test_id'></altfins-screener-data-component>
             </div>
 
             <!-- Chart Panel 2 -->
@@ -63,15 +63,15 @@ function createCommonHTML() {
             <div class="chart-panel">
                 <div class="chart-panel-title"> </div>
                 <div class="widget-wrapper" id="tv_chart_kc"></div>
-                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[  "IR_CCI20", "IR_STOCH", "IR_STOCH_SLOW"]' affiliateid='test_id'></altfins-screener-data-component>
-                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[  "LONG_TERM_TREND", "LONG_TERM_TREND_CHANGE"]' affiliateid='test_id'></altfins-screener-data-component>
+                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "IR_STOCH", "IR_STOCH_SLOW"]' affiliateid='test_id'></altfins-screener-data-component>
+                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "SHORT_TERM_TREND", "SHORT_TERM_TREND_CHANGE"]' affiliateid='test_id'></altfins-screener-data-component>
             </div>
 
             <!-- Chart Panel 4 -->
             <div class="chart-panel">
                 <div class="chart-panel-title"> </div>
                 <div class="widget-wrapper" id="tv_chart_dc"></div>
-                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "IR_WILLIAMS",  "VOLUME_CHANGE", "OBV_TREND" ]' affiliateid='test_id'></altfins-screener-data-component>
+                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "IR_CCI20", "IR_WILLIAMS", "OBV_TREND" ]' affiliateid='test_id'></altfins-screener-data-component>
                 <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "BULL_POWER", "BEAR_POWER", "VOLUME_RELATIVE"]' affiliateid='test_id'></altfins-screener-data-component>
             </div>
 
@@ -135,7 +135,7 @@ function createTradingViewWidgetWithKC(containerId, symbol, interval) {
     let config = getWidgetConfig(symbol, interval, false);
     config.studies = [
         "STD;Keltner_Channels",
-        "STD;CCI",
+        "STD;Stochastic",
         "STD;Pivot%1Points%1High%1Low"
     ];
     config.container_id = containerId;
@@ -147,7 +147,7 @@ function createTradingViewWidgetWithDC(containerId, symbol, interval) {
     config.studies = [
         "STD;Williams_Alligator",
         "STD;Donchian_Channels",
-        "STD;Willams_R"
+        "STD;CCI",
     ];
     config.container_id = containerId;
     return new TradingView.widget(config);
@@ -259,18 +259,18 @@ function updatePageContent(symbolInfo) {
             <a href="https://tw.tradingview.com/support/solutions/43000502338/" target="_blank" class="indicator-link">RSI</a>
         </span>`;
         
-        // 第三張圖表：KC, Pivots, CCI // EMA + ATR 震盪指標敏感型
+        // 第三張圖表：KC, Pivots, KD // EMA + ATR 
         chartTitles[2].innerHTML = `${symbolInfo.name}/USDT <span class="indicators-info">
             <a href="https://tw.tradingview.com/support/solutions/43000502266/" target="_blank" class="indicator-link">KC</a>, 
             <a href="https://tw.tradingview.com/support/solutions/43000589195/" target="_blank" class="indicator-link">Pivots</a>, 
-            <a href="https://tw.tradingview.com/support/solutions/43000502001/" target="_blank" class="indicator-link">CCI</a>
+            <a href="https://tw.tradingview.com/support/solutions/43000502332/" target="_blank" class="indicator-link">KD</a>
         </span>`;
         
-        // 第四張圖表：DC, Alligator, %R  // 20 Day 趨勢指標 震盪指標極敏感型
+        // 第四張圖表：DC, Alligator, CCI 
         chartTitles[3].innerHTML = `${symbolInfo.name}/USDT <span class="indicators-info">
             <a href="https://tw.tradingview.com/support/solutions/43000502253/" target="_blank" class="indicator-link">DC</a>, 
             <a href="https://tw.tradingview.com/support/solutions/43000592305/" target="_blank" class="indicator-link"><span style="color: #34B77B">Alli</span><span style="color: #FF5252">gat</span><span style="color: #2962FF">or</span></a>, 
-            <a href="https://tw.tradingview.com/support/solutions/43000501985/" target="_blank" class="indicator-link">%R</a>
+            <a href="https://tw.tradingview.com/support/solutions/43000502001/" target="_blank" class="indicator-link">CCI</a>
         </span>`;
 
         // 第五張圖表：Supertrend, ATR, MA
