@@ -47,8 +47,8 @@ function createCommonHTML() {
             <div class="chart-panel">
                 <div class="chart-panel-title"> </div>
                 <div class="widget-wrapper" id="tv_chart_eth"></div>
-                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "COIN", "SMA20_SMA50_BS_SIGNAL", "SMA20_TREND"]' affiliateid='test_id'></altfins-screener-data-component>
-                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "MACD_BS_SIGNAL", "LONG_TERM_TREND", "LONG_TERM_TREND_CHANGE"]' affiliateid='test_id'></altfins-screener-data-component>
+                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "MACD_BS_SIGNAL", "SMA20_SMA50_BS_SIGNAL", "SMA20_TREND"]' affiliateid='test_id'></altfins-screener-data-component>
+                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "LONG_TERM_TREND", "LONG_TERM_TREND_CHANGE"]' affiliateid='test_id'></altfins-screener-data-component>
             </div>
 
             <!-- Chart Panel 2 -->
@@ -308,15 +308,6 @@ const indicatorDefinitions = [
         ]
     },
     {
-        name: "布林通道 (BB - Bollinger Bands)",
-        description: "BB 由三條線組成：中軌（一條簡單移動平均線）以及上下各一條標準差軌道。它用來衡量市場的波動性。",
-        usage: [
-            "價格觸及上軌，可能表示超買；觸及下軌，可能表示超賣。",
-            "通道變窄（擠壓），預示著市場波動性即將放大，可能出現突破行情。",
-            "價格持續沿著上軌或下軌運行，表示趨勢非常強勁。"
-        ]
-    },
-    {
         name: "相對強弱指數 (RSI - Relative Strength Index)",
         description: "RSI 是一個動量振盪指標，衡量價格變動的速度和變動幅度，主要用來判斷市場是否處於超買或超賣狀態。",
         usage: [
@@ -326,12 +317,40 @@ const indicatorDefinitions = [
         ]
     },
     {
+        name: "隨機指標 (KD - Stochastic Oscillator)",
+        description: "KD 指標是一個動量振盪指標，由 %K 線和 %D 線組成。它比較收盤價與一定期間內最高價和最低價的相對位置，用來判斷超買超賣狀態和趨勢轉折點。",
+        usage: [
+            "KD 值在 80 以上為超買區，價格可能面臨回檔壓力；KD 值在 20 以下為超賣區，價格可能出現反彈。",
+            "%K 線向上穿越 %D 線（黃金交叉）是買入信號；%K 線向下穿越 %D 線（死亡交叉）是賣出信號。",
+            "KD 指標與價格的背離（價格創新高但 KD 未跟隨，或價格創新低但 KD 未跟隨）是趨勢可能反轉的重要警訊。",
+            "在強勢上升趨勢中，KD 可能長時間停留在高檔區（50-80），此時不宜過早賣出；在強勢下跌趨勢中亦然。"
+        ]
+    },
+    {
+        name: "布林通道 (BB - Bollinger Bands)",
+        description: "BB 由三條線組成：中軌（一條簡單移動平均線）以及上下各一條標準差軌道。它用來衡量市場的波動性。",
+        usage: [
+            "價格觸及上軌，可能表示超買；觸及下軌，可能表示超賣。",
+            "通道變窄（擠壓），預示著市場波動性即將放大，可能出現突破行情。",
+            "價格持續沿著上軌或下軌運行，表示趨勢非常強勁。"
+        ]
+    },
+    {
         name: "肯特納通道 (KC - Keltner Channels)",
         description: "KC 類似布林通道，但其上下軌是基於平均真實波幅 (ATR) 計算的，通常用來識別趨勢和尋找突破機會。",
         usage: [
             "價格收盤在 KC 上軌之上，是強烈的看漲訊號。",
             "價格收盤在 KC 下軌之下，是強烈的看跌訊號。",
             "KC 可與 BB 結合使用，以過濾掉一些假突破訊號。"
+        ]
+    },
+    {
+        name: "唐奇安通道 (Donchian Channels)",
+        description: "此指標由三條線組成，分別是指定週期內的最高價、最低價以及兩者的平均值。它主要用於識別突破。",
+        usage: [
+            "價格突破上軌是強烈的買入信號，表明趨勢可能向上。",
+            "價格跌破下軌是強烈的賣出信號，表明趨勢可能向下。",
+            "中線可用於判斷趨勢的強度和潛在的回調水平。"
         ]
     },
     {
@@ -350,15 +369,6 @@ const indicatorDefinitions = [
             "當三條線糾纏在一起時，表示市場處於休眠狀態（鱷魚在睡覺）。",
             "當線條開始分開並向上（綠色 > 紅色 > 藍色）時，是上升趨勢的信號。",
             "當線條開始分開並向下（藍色 > 紅色 > 綠色）時，是下降趨勢的信號。"
-        ]
-    },
-    {
-        name: "唐奇安通道 (Donchian Channels)",
-        description: "此指標由三條線組成，分別是指定週期內的最高價、最低價以及兩者的平均值。它主要用於識別突破。",
-        usage: [
-            "價格突破上軌是強烈的買入信號，表明趨勢可能向上。",
-            "價格跌破下軌是強烈的賣出信號，表明趨勢可能向下。",
-            "中線可用於判斷趨勢的強度和潛在的回調水平。"
         ]
     },
     {
@@ -539,6 +549,60 @@ const combinedScenarios = [
             "操作建議：訊號分歧時應該降低倉位，等待兩個指標重新同步。如果 SAR 先轉向，可能是短期調整；如果 Supertrend 先轉向，可能是較大級別的趨勢變化。"
         ],
         styles: ['font-weight: bold; color: #FF6B6B', 'font-weight: normal', 'font-weight: bold; color: #F9A825', 'font-weight: normal', 'font-weight: bold; color: #4ECDC4', 'font-weight: normal', 'font-weight: bold; color: #2962FF', 'font-weight: normal']
+    },
+    {
+        title: "組合判斷：KD + RSI 雙重超買超賣確認",
+        explanation: [
+            "當 %cKD 指標進入超買區 (>80) 且 RSI 也同時超買 (>70)%c 時，這是 %c雙重超買確認%c，回調風險極高。",
+            "反之，當 %cKD 指標進入超賣區 (<20) 且 RSI 也同時超賣 (<30)%c 時，這是 %c雙重超賣確認%c，反彈機會較大。",
+            "操作建議：雙重超買時應考慮獲利了結或做空；雙重超賣時可考慮逢低買入。但需注意強勢趨勢中指標可能長時間停留在極值區域。"
+        ],
+        styles: ['font-weight: bold; color: #FF6B6B', 'font-weight: normal', 'font-weight: bold; color: #F9A825', 'font-weight: normal', 'font-weight: bold; color: #4ECDC4', 'font-weight: normal', 'font-weight: bold; color: #2962FF', 'font-weight: normal']
+    },
+    {
+        title: "組合判斷：KD + MACD 確認趨勢轉折",
+        explanation: [
+            "當價格創新低但 %cKD 指標未跟隨創新低%c（底背離），同時 %cMACD 出現黃金交叉%c，這是強烈的看漲轉折信號。",
+            "當價格創新高但 %cKD 指標未跟隨創新高%c（頂背離），同時 %cMACD 出現死亡交叉%c，這是強烈的看跌轉折信號。",
+            "操作建議：KD 背離提供早期警訊，MACD 交叉提供進場確認。兩者結合可以提高趨勢轉折判斷的準確性，是左側交易的重要參考。"
+        ],
+        styles: ['font-weight: bold; color: #4ECDC4', 'font-weight: normal', 'font-weight: bold; color: #2962FF', 'font-weight: normal', 'font-weight: bold; color: #FF6B6B', 'font-weight: normal', 'font-weight: bold; color: #F9A825', 'font-weight: normal']
+    },
+    {
+        title: "組合判斷：KD + 移動平均線 (MA) 趨勢內的回調機會",
+        explanation: [
+            "在明確的上升趨勢中（價格位於 20 日和 50 日 MA 之上），當 %cKD 指標回落至超賣區 (<20)%c 時，這通常是 %c趨勢內的健康回調%c。",
+            "此時 %cKD 的黃金交叉%c（%K 向上穿越 %D）往往是重新進場做多的絕佳時機。",
+            "操作建議：在趨勢明確的前提下，利用 KD 超賣後的黃金交叉作為加倉點。止損可設在最近的 MA 支撐下方。"
+        ],
+        styles: ['font-weight: bold; color: #4ECDC4', 'font-weight: normal', 'font-weight: bold; color: #2962FF', 'font-weight: normal', 'font-weight: bold; color: #F9A825', 'font-weight: normal']
+    },
+    {
+        title: "組合判斷：KD + 布林通道 (BB) 識別突破品質",
+        explanation: [
+            "當價格 %c突破布林通道上軌%c 且 %cKD 指標同時發生黃金交叉%c 時，這是高品質突破的強烈信號。",
+            "如果 %cKD 已經處於超買區 (>80) 才突破 BB 上軌%c，則突破的持續性可能較弱，需要謹慎對待。",
+            "操作建議：最佳的突破進場時機是 KD 從中性區域（20-80）開始向上且價格同時突破 BB 上軌。這樣的突破通常有較好的後續表現。"
+        ],
+        styles: ['font-weight: bold; color: #FF6B6B', 'font-weight: normal', 'font-weight: bold; color: #4ECDC4', 'font-weight: normal', 'font-weight: bold; color: #F9A825', 'font-weight: normal']
+    },
+    {
+        title: "組合判斷：KD + ATR 判斷波動環境下的操作策略",
+        explanation: [
+            "在 %c高 ATR 環境%c（市場波動劇烈）下，%cKD 指標的信號可能會頻繁出現%c，增加假信號的機率。",
+            "在 %c低 ATR 環境%c（市場波動平緩）下，%cKD 的信號相對更可靠%c，但利潤空間可能有限。",
+            "操作建議：高波動時期應該提高 KD 信號的確認標準，例如等待 KD 在極值區停留更長時間；低波動時期可以更積極地跟隨 KD 信號，但要設置合理的利潤目標。"
+        ],
+        styles: ['font-weight: bold; color: #FF6B6B', 'font-weight: normal', 'font-weight: bold; color: #F9A825', 'font-weight: normal', 'font-weight: bold; color: #4ECDC4', 'font-weight: normal', 'font-weight: bold; color: #2962FF', 'font-weight: normal']
+    },
+    {
+        title: "組合判斷：KD + Supertrend 多時間框架分析",
+        explanation: [
+            "當 %c日線 Supertrend 為綠色%c（確認中期上升趨勢）時，可以在 %c小時線觀察 KD 指標%c 尋找短期進場機會。",
+            "在大趨勢向上的前提下，%c小時線 KD 的超賣後黃金交叉%c 是非常好的進場點，風險相對較低。",
+            "操作建議：使用 Supertrend 確定大方向，用 KD 優化進場時機。這種多時間框架的組合可以提高勝率並改善風險回報比。"
+        ],
+        styles: ['font-weight: bold; color: #4ECDC4', 'font-weight: normal', 'font-weight: bold; color: #2962FF', 'font-weight: normal', 'font-weight: bold; color: #F9A825', 'font-weight: normal']
     }
 ];
 
