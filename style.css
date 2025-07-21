@@ -23,7 +23,7 @@ html, body {
         .dashboard-grid {
             flex-grow: 1;
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr 1.2fr;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1.5fr;
             grid-template-rows: 1fr;
             gap: 12px;
             min-height: calc(100vh - 80px);
@@ -97,7 +97,7 @@ html, body {
         }
         altfins-screener-data-component {
             flex-shrink: 0;
-            max-height: 80px;
+            max-height: 78px;
             overflow: hidden;
         }
         .interval-buttons {
