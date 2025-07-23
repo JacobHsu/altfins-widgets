@@ -176,7 +176,7 @@ function createTradingViewWidgetWithLR(containerId, symbol, interval) {
     let config = getWidgetConfig(symbol, interval, true);
     config.studies = [
         "STD;Linear_Regression",
-        "STD;Zig_Zag",
+        "STD;VWMA",
         "STD;Money_Flow"
     ];
     config.container_id = containerId;
@@ -301,10 +301,10 @@ function updatePageContent(symbolInfo) {
             <a href="https://tw.tradingview.com/support/solutions/43000502589/" target="_blank" class="indicator-link">MA</a>
         </span>`;
 
-        // 第六張圖表：Linear Regression, Zig Zag, Money Flow Index
+        // 第六張圖表：Linear Regression, VWMA, Money Flow Index
         chartTitles[5].innerHTML = `${symbolInfo.name}/USDT <span class="indicators-info">
             <a href="https://tw.tradingview.com/support/solutions/43000644936/" target="_blank" class="indicator-link">LinReg</a>, 
-            <a href="https://tw.tradingview.com/support/solutions/43000591664/" target="_blank" class="indicator-link">Zig Zag</a>, 
+            <a href="https://tw.tradingview.com/support/solutions/43000592293/" target="_blank" class="indicator-link">VWMA</a>, 
             <a href="https://tw.tradingview.com/support/solutions/43000502348/" target="_blank" class="indicator-link">MFI</a>
         </span>`;
     }
@@ -464,6 +464,18 @@ const indicatorDefinitions = [
             "MFI 與價格的背離（例如，價格創新高但 MFI 下降）是趨勢可能反轉的強烈信號。",
             "MFI 的優勢在於同時考慮價格和成交量，比單純的價格指標更能反映市場的真實供需狀況。",
             "當 MFI 從超賣區向上突破 20 時是買入信號；從超買區向下跌破 80 時是賣出信號。"
+        ]
+    },
+    {
+        name: "成交量加權移動平均線 (Volume Weighted Moving Average - VWMA)",
+        description: "VWMA 是一種將成交量作為權重的移動平均線，它給予成交量大的價格更高的權重。相比傳統移動平均線，VWMA 更能反映市場的真實平均成本和主力資金的動向。",
+        usage: [
+            "當價格位於 VWMA 上方時，表示當前價格高於成交量加權平均成本，通常為看漲信號。",
+            "當價格位於 VWMA 下方時，表示當前價格低於成交量加權平均成本，通常為看跌信號。",
+            "VWMA 的斜率可以判斷趨勢強度：向上傾斜表示上升趨勢，向下傾斜表示下降趨勢。",
+            "價格突破 VWMA 並伴隨大成交量時，是強烈的趨勢確認信號。",
+            "VWMA 可以作為動態支撐阻力線：上升趨勢中作為支撐，下降趨勢中作為阻力。",
+            "相比 SMA/EMA，VWMA 對成交量異常的價格變動更敏感，能更好地反映主力資金行為。"
         ]
     }
 ];

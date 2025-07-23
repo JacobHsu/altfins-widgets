@@ -20,6 +20,7 @@
 | **Linear Regression** | 趨勢統計分析 | 價格在線上方 | 價格在線下方 | 沿線運行 |
 | **Zig Zag** | 波段識別 | 轉折向上 | 轉折向下 | 波段內 |
 | **MFI** | 資金流動量 | <20 | >80 | 20-80 |
+| **VWMA** | 成交量加權移動平均 | 價格上穿 | 價格下穿 | 沿線運行 |
 
 ---
 
@@ -50,6 +51,7 @@
 - Supertrend：□ 綠色 □ 紅色
 - KC：□ 突破上軌 □ 跌破下軌 □ 通道內
 - BB：□ 突破上軌 □ 跌破下軌 □ 通道內
+- VWMA：□ 價格上穿 □ 價格下穿 □ 沿線運行
 - Linear Regression：□ 價格在線上方 □ 價格在線下方 □ 沿線運行
 - Zig Zag：□ 轉折向上 □ 轉折向下 □ 波段內
 
@@ -145,11 +147,12 @@
 ### 4. 低敏感度指標
 11. **Donchian Channels (DC)** - 基於最高/最低價的通道
 12. **Williams Alligator** - 多重平滑移動平均線
-13. **移動平均線 (MA)** - 趨勢方向基準
-14. **Linear Regression** - 統計趨勢分析
-15. **Zig Zag** - 波段結構識別
+13. **VWMA (Volume Weighted MA)** - 成交量加權移動平均線
+14. **移動平均線 (MA)** - 趨勢方向基準
+15. **Linear Regression** - 統計趨勢分析
+16. **Zig Zag** - 波段結構識別
 
 ### 5. 波動性指標（輔助參考）
-16. **ATR (Average True Range)** - 市場波動性測量
+17. **ATR (Average True Range)** - 市場波動性測量
 
 ---

@@ -25,6 +25,9 @@
 - Bollinger Bands (布林帶)
 - Parabolic SAR (拋物線指標)
 - RSI (相對強弱指標)
+- VWMA (成交量加權移動平均線)
+- Linear Regression (線性回歸)
+- Money Flow Index (資金流指標)
 
 ### 🔍 Altfins 技術分析
 每個交易對都包含詳細的技術分析數據：
