@@ -263,6 +263,45 @@ function getIntervalFromUrl() {
     return { interval: 'D', buttonId: 'btn-1d' };
 }
 
+function showToggleNotification(title, subtitle) {
+    // 移除現有的通知（如果有的話）
+    const existingNotification = document.querySelector('.toggle-notification');
+    if (existingNotification) {
+        document.body.removeChild(existingNotification);
+    }
+    
+    const notification = document.createElement('div');
+    notification.className = 'toggle-notification';
+    notification.style.position = 'fixed';
+    notification.style.top = '20px';
+    notification.style.left = '50%';
+    notification.style.transform = 'translateX(-50%)';
+    notification.style.backgroundColor = '#2a2e39';
+    notification.style.color = '#d1d4dc';
+    notification.style.padding = '12px 20px';
+    notification.style.borderRadius = '6px';
+    notification.style.fontSize = '14px';
+    notification.style.zIndex = '10000';
+    notification.style.boxShadow = '0 4px 12px rgba(0,0,0,0.4)';
+    notification.style.border = '1px solid #434651';
+    notification.style.textAlign = 'center';
+    notification.style.minWidth = '200px';
+    notification.style.animation = 'fadeInOut 2s ease-in-out';
+    notification.innerHTML = `
+        <div style="font-weight: 500;">${title}</div>
+        <div style="font-size: 12px; color: #868993; margin-top: 4px;">${subtitle}</div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // 2秒後自動移除
+    setTimeout(() => {
+        if (document.body.contains(notification)) {
+            document.body.removeChild(notification);
+        }
+    }, 2000);
+}
+
 function updatePageContent(symbolInfo) {
     document.title = `${symbolInfo.name}/USDT Dashboard - Altfins Widgets`;
     const chartTitles = document.querySelectorAll('.chart-panel-title');
@@ -855,5 +894,37 @@ document.addEventListener('DOMContentLoaded', () => {
         // 設置正確的按鈕狀態
         document.querySelectorAll('.interval-buttons button').forEach(btn => btn.classList.remove('active'));
         document.getElementById(urlInterval.buttonId).classList.add('active');
+    });
+    
+    // 鍵盤事件監聽 - Shift+F 隱藏/顯示 altfins 表格
+    let altfinsVisible = true;
+    
+    document.addEventListener('keydown', (event) => {
+        // 檢查是否按下 Shift+F
+        if (event.shiftKey && (event.key === 'F' || event.key === 'f')) {
+            event.preventDefault(); // 防止瀏覽器默認行為
+            
+            const altfinsComponents = document.querySelectorAll('altfins-screener-data-component');
+            
+            if (altfinsVisible) {
+                // 隱藏所有 altfins 組件
+                altfinsComponents.forEach(component => {
+                    component.style.display = 'none';
+                });
+                altfinsVisible = false;
+                
+                // 顯示提示
+                showToggleNotification('📊 數據表格已隱藏', 'Shift+F 再次顯示');
+            } else {
+                // 顯示所有 altfins 組件
+                altfinsComponents.forEach(component => {
+                    component.style.display = 'block';
+                });
+                altfinsVisible = true;
+                
+                // 顯示提示
+                showToggleNotification('📊 數據表格已顯示', 'Shift+F 可隱藏');
+            }
+        }
     });
 });
