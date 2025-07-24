@@ -55,7 +55,7 @@ function createCommonHTML() {
             <div class="chart-panel">
                 <div class="chart-panel-title"> </div>
                 <div class="widget-wrapper" id="tv_chart_bb"></div>
-                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "IR_BANDED_OSC", "IR_OSCILLATOR_RATING", "IR_RSI14"]' affiliateid='test_id'></altfins-screener-data-component>
+                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "IR_BANDED_OSC", "IR_RSI14"]' affiliateid='test_id'></altfins-screener-data-component>
                 <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "MEDIUM_TERM_TREND", "MEDIUM_TERM_TREND_CHANGE"]' affiliateid='test_id'></altfins-screener-data-component>
             </div>
 
