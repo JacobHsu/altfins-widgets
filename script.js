@@ -26,6 +26,11 @@ const coinMarketCapIds = {
 };
 
 function createCommonHTML() {
+    // 獲取當前頁面的幣種
+    const currentSymbol = getSelectedSymbol();
+    const symbolName = currentSymbol ? currentSymbol.name : 'ETH';
+    const coinId = coinMarketCapIds[symbolName] || '1027';
+    
     const body = document.querySelector('body');
     body.innerHTML = `
     <div class="interval-buttons">
@@ -34,8 +39,8 @@ function createCommonHTML() {
         <button id="btn-1d" class="active">1d</button>
         <div class="custom-dropdown" id="symbol-dropdown">
             <div class="dropdown-selected" id="dropdown-selected">
-                <img src="https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png" class="coin-logo" alt="ETH">
-                <span>ETH</span>
+                <img src="https://s2.coinmarketcap.com/static/img/coins/64x64/${coinId}.png" class="coin-logo" alt="${symbolName}">
+                <span>${symbolName}</span>
                 <span class="dropdown-arrow">▼</span>
             </div>
             <div class="dropdown-options" id="dropdown-options"></div>
@@ -47,48 +52,48 @@ function createCommonHTML() {
             <div class="chart-panel">
                 <div class="chart-panel-title"> </div>
                 <div class="widget-wrapper" id="tv_chart_eth"></div>
-                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "MACD_BS_SIGNAL", "SMA20_SMA50_BS_SIGNAL"]' affiliateid='test_id'></altfins-screener-data-component>
-                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "LONG_TERM_TREND", "LONG_TERM_TREND_CHANGE"]' affiliateid='test_id'></altfins-screener-data-component>
+                <altfins-screener-data-component symbols='["${symbolName}"]' theme='no-border compact dark' valueids='[ "MACD_BS_SIGNAL", "SMA20_SMA50_BS_SIGNAL"]' affiliateid='test_id'></altfins-screener-data-component>
+                <altfins-screener-data-component symbols='["${symbolName}"]' theme='no-border compact dark' valueids='[ "LONG_TERM_TREND", "LONG_TERM_TREND_CHANGE"]' affiliateid='test_id'></altfins-screener-data-component>
             </div>
 
             <!-- Chart Panel 2 -->
             <div class="chart-panel">
                 <div class="chart-panel-title"> </div>
                 <div class="widget-wrapper" id="tv_chart_bb"></div>
-                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "IR_BANDED_OSC", "IR_RSI14"]' affiliateid='test_id'></altfins-screener-data-component>
-                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "MEDIUM_TERM_TREND", "MEDIUM_TERM_TREND_CHANGE"]' affiliateid='test_id'></altfins-screener-data-component>
+                <altfins-screener-data-component symbols='["${symbolName}"]' theme='no-border compact dark' valueids='[ "IR_BANDED_OSC", "IR_RSI14"]' affiliateid='test_id'></altfins-screener-data-component>
+                <altfins-screener-data-component symbols='["${symbolName}"]' theme='no-border compact dark' valueids='[ "MEDIUM_TERM_TREND", "MEDIUM_TERM_TREND_CHANGE"]' affiliateid='test_id'></altfins-screener-data-component>
             </div>
 
             <!-- Chart Panel 3 -->
             <div class="chart-panel">
                 <div class="chart-panel-title"> </div>
                 <div class="widget-wrapper" id="tv_chart_kc"></div>
-                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "IR_STOCH", "IR_STOCH_SLOW" ]' affiliateid='test_id'></altfins-screener-data-component>
-                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "SHORT_TERM_TREND", "SHORT_TERM_TREND_CHANGE" ]' affiliateid='test_id'></altfins-screener-data-component>
+                <altfins-screener-data-component symbols='["${symbolName}"]' theme='no-border compact dark' valueids='[ "IR_STOCH", "IR_STOCH_SLOW" ]' affiliateid='test_id'></altfins-screener-data-component>
+                <altfins-screener-data-component symbols='["${symbolName}"]' theme='no-border compact dark' valueids='[ "SHORT_TERM_TREND", "SHORT_TERM_TREND_CHANGE" ]' affiliateid='test_id'></altfins-screener-data-component>
             </div>
 
             <!-- Chart Panel 4 -->
             <div class="chart-panel">
                 <div class="chart-panel-title"> </div>
                 <div class="widget-wrapper" id="tv_chart_dc"></div>
-                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "IR_CCI20", "IR_WILLIAMS" ]' affiliateid='test_id'></altfins-screener-data-component>
-                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "IR_NEW_HIGH", "IR_NEW_LOW"]' affiliateid='test_id'></altfins-screener-data-component>
+                <altfins-screener-data-component symbols='["${symbolName}"]' theme='no-border compact dark' valueids='[ "IR_CCI20", "IR_WILLIAMS" ]' affiliateid='test_id'></altfins-screener-data-component>
+                <altfins-screener-data-component symbols='["${symbolName}"]' theme='no-border compact dark' valueids='[ "IR_NEW_HIGH", "IR_NEW_LOW"]' affiliateid='test_id'></altfins-screener-data-component>
             </div>
 
             <!-- Chart Panel 5 -->
             <div class="chart-panel">
                 <div class="chart-panel-title"> </div>
                 <div class="widget-wrapper" id="tv_chart_st"></div>
-                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "SMA10_TREND", "SMA20_TREND" ]' affiliateid='test_id'></altfins-screener-data-component>
-                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "BULL_POWER", "BEAR_POWER" ]' affiliateid='test_id'></altfins-screener-data-component>
+                <altfins-screener-data-component symbols='["${symbolName}"]' theme='no-border compact dark' valueids='[ "SMA10_TREND", "SMA20_TREND" ]' affiliateid='test_id'></altfins-screener-data-component>
+                <altfins-screener-data-component symbols='["${symbolName}"]' theme='no-border compact dark' valueids='[ "BULL_POWER", "BEAR_POWER" ]' affiliateid='test_id'></altfins-screener-data-component>
             </div>
 
             <!-- Chart Panel 6 -->
             <div class="chart-panel">
                 <div class="chart-panel-title"> </div>
                 <div class="widget-wrapper" id="tv_chart_lr"></div>
-                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "OBV_TREND", "PRICE_CHANGE_1D", "PRICE_CHANGE_1W",  "PERFORMANCE" ]' affiliateid='test_id'></altfins-screener-data-component>
-                <altfins-screener-data-component symbols='["ETH"]' theme='no-border compact dark' valueids='[ "VOLUME_RELATIVE", "IR_UNUSUAL_VOLUME_SPIKE",  "ATH" ]' affiliateid='test_id'></altfins-screener-data-component>
+                <altfins-screener-data-component symbols='["${symbolName}"]' theme='no-border compact dark' valueids='[ "OBV_TREND", "PRICE_CHANGE_1D", "PRICE_CHANGE_1W",  "PERFORMANCE" ]' affiliateid='test_id'></altfins-screener-data-component>
+                <altfins-screener-data-component symbols='["${symbolName}"]' theme='no-border compact dark' valueids='[ "VOLUME_RELATIVE", "IR_UNUSUAL_VOLUME_SPIKE",  "ATH" ]' affiliateid='test_id'></altfins-screener-data-component>
             </div>
         </div>
     </div>
@@ -347,10 +352,63 @@ function updatePageContent(symbolInfo) {
             <a href="https://tw.tradingview.com/support/solutions/43000502348/" target="_blank" class="indicator-link">MFI</a>
         </span>`;
     }
-    const altfinsComponents = document.querySelectorAll('altfins-screener-data-component');
-    altfinsComponents.forEach(component => {
-        component.setAttribute('symbols', `["${symbolInfo.name}"]`);
-    });
+    
+    // 更新 altfins 組件的 symbols 屬性，使用延遲確保組件已載入
+    updateAltfinsSymbols(symbolInfo.name);
+}
+
+function updateAltfinsSymbols(symbolName) {
+    console.log(`🔄 Attempting to update altfins components to symbol: ${symbolName}`);
+    
+    const updateSymbols = () => {
+        const altfinsComponents = document.querySelectorAll('altfins-screener-data-component');
+        console.log(`📊 Found ${altfinsComponents.length} altfins components`);
+        
+        if (altfinsComponents.length > 0) {
+            altfinsComponents.forEach((component, index) => {
+                const currentSymbol = component.getAttribute('symbols');
+                console.log(`Component ${index + 1}: Current symbol = ${currentSymbol}, Target symbol = ["${symbolName}"]`);
+                
+                // 如果 symbols 已經是正確的，跳過
+                if (currentSymbol === `["${symbolName}"]`) {
+                    console.log(`✅ Component ${index + 1} already has correct symbol`);
+                    return;
+                }
+                
+                // 獲取組件的所有屬性
+                const theme = component.getAttribute('theme');
+                const valueids = component.getAttribute('valueids');
+                const affiliateid = component.getAttribute('affiliateid');
+                const parent = component.parentNode;
+                
+                // 完全重新創建組件
+                console.log(`🔄 Recreating component ${index + 1} with new symbol`);
+                
+                // 移除舊組件
+                parent.removeChild(component);
+                
+                // 創建新組件
+                setTimeout(() => {
+                    const newComponent = document.createElement('altfins-screener-data-component');
+                    newComponent.setAttribute('symbols', `["${symbolName}"]`);
+                    newComponent.setAttribute('theme', theme);
+                    newComponent.setAttribute('valueids', valueids);
+                    newComponent.setAttribute('affiliateid', affiliateid);
+                    
+                    parent.appendChild(newComponent);
+                    console.log(`✅ Component ${index + 1} recreated with symbol: ["${symbolName}"]`);
+                }, 50 * index); // 錯開創建時間避免衝突
+            });
+            
+            console.log(`✨ Finished recreating ${altfinsComponents.length} altfins components with symbol: ${symbolName}`);
+        } else {
+            console.log(`⏳ No altfins components found, retrying in 100ms...`);
+            setTimeout(updateSymbols, 100);
+        }
+    };
+    
+    // 立即嘗試更新
+    updateSymbols();
 }
 
 // --- 技術指標教學內容 ---
@@ -864,10 +922,27 @@ document.addEventListener('DOMContentLoaded', () => {
             dropdownSelected.classList.remove('open');
             dropdownOptions.classList.remove('show');
             
-            // Navigate to new page
+            // Update content dynamically instead of navigating to new page
+            const symbolInfo = { name: selectedValue, pair: supportedSymbols[selectedValue] };
+            updatePageContent(symbolInfo);
+            
+            // Get current interval and re-render widgets with new symbol
+            const urlInterval = getIntervalFromUrl();
+            renderWidgets(urlInterval.interval);
+            
+            // 額外確保 altfins 組件更新 - 延遲執行
             setTimeout(() => {
-                window.location.href = `${selectedValue}.html`;
-            }, 150);
+                updateAltfinsSymbols(selectedValue);
+            }, 500);
+            
+            // 再次確保更新 - 更長延遲
+            setTimeout(() => {
+                updateAltfinsSymbols(selectedValue);
+            }, 1500);
+            
+            // Update URL without page reload
+            const newUrl = `${selectedValue}.html${window.location.hash}`;
+            window.history.pushState({ symbol: selectedValue }, '', newUrl);
         }
     });
 
@@ -887,6 +962,35 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('hashchange', () => {
         const currentSymbol = getSelectedSymbol();
         const urlInterval = getIntervalFromUrl();
+        
+        updatePageContent(currentSymbol);
+        renderWidgets(urlInterval.interval);
+        
+        // 設置正確的按鈕狀態
+        document.querySelectorAll('.interval-buttons button').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(urlInterval.buttonId).classList.add('active');
+    });
+
+    // 監聽瀏覽器前進/後退按鈕
+    window.addEventListener('popstate', (event) => {
+        const currentSymbol = getSelectedSymbol();
+        const urlInterval = getIntervalFromUrl();
+        
+        // 更新下拉選單顯示
+        const dropdownSelected = document.getElementById('dropdown-selected');
+        if (dropdownSelected) {
+            const selectedImg = dropdownSelected.querySelector('img');
+            const selectedSpan = dropdownSelected.querySelector('span');
+            const coinId = coinMarketCapIds[currentSymbol.name];
+            selectedImg.src = `https://s2.coinmarketcap.com/static/img/coins/64x64/${coinId}.png`;
+            selectedImg.alt = currentSymbol.name;
+            selectedSpan.textContent = currentSymbol.name;
+            
+            // 更新選中狀態
+            document.querySelectorAll('.dropdown-option').forEach(opt => opt.classList.remove('selected'));
+            const currentOption = document.querySelector(`[data-value="${currentSymbol.name}"]`);
+            if (currentOption) currentOption.classList.add('selected');
+        }
         
         updatePageContent(currentSymbol);
         renderWidgets(urlInterval.interval);
