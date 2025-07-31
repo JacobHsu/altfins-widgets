@@ -209,10 +209,13 @@ function renderWidgets(interval) {
 function changeInterval(interval, btnElement) {
     renderWidgets(interval);
     document.querySelectorAll('.interval-buttons button').forEach(btn => btn.classList.remove('active'));
-    btnElement.classList.add('active');
+    if (btnElement) {
+        btnElement.classList.add('active');
+    }
     
     // 更新 hash 來反映當前的時間間隔
     const intervalMap = {
+        '15': '15M',
         '60': '1H',
         '240': '4H',
         'D': '1D'
@@ -252,8 +255,10 @@ function getIntervalFromUrl() {
     const hash = window.location.hash.substring(1); // 移除 #
     if (hash) {
         const intervalPart = hash.toUpperCase();
-        if (['1H', '4H', '1D'].includes(intervalPart)) {
+        if (['15M', '1H', '4H', '1D'].includes(intervalPart)) {
             switch (intervalPart) {
+                case '15M':
+                    return { interval: '15', buttonId: null }; // 15分鐘沒有對應按鈕
                 case '1H':
                     return { interval: '60', buttonId: 'btn-1h' };
                 case '4H':
@@ -862,7 +867,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 設置正確的按鈕狀態
     document.querySelectorAll('.interval-buttons button').forEach(btn => btn.classList.remove('active'));
-    document.getElementById(urlInterval.buttonId).classList.add('active');
+    if (urlInterval.buttonId) {
+        document.getElementById(urlInterval.buttonId).classList.add('active');
+    }
 
     document.getElementById('btn-1h').addEventListener('click', (e) => changeInterval('60', e.target));
     document.getElementById('btn-4h').addEventListener('click', (e) => changeInterval('240', e.target));
@@ -968,7 +975,9 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // 設置正確的按鈕狀態
         document.querySelectorAll('.interval-buttons button').forEach(btn => btn.classList.remove('active'));
-        document.getElementById(urlInterval.buttonId).classList.add('active');
+        if (urlInterval.buttonId) {
+            document.getElementById(urlInterval.buttonId).classList.add('active');
+        }
     });
 
     // 監聽瀏覽器前進/後退按鈕
@@ -997,14 +1006,16 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // 設置正確的按鈕狀態
         document.querySelectorAll('.interval-buttons button').forEach(btn => btn.classList.remove('active'));
-        document.getElementById(urlInterval.buttonId).classList.add('active');
+        if (urlInterval.buttonId) {
+            document.getElementById(urlInterval.buttonId).classList.add('active');
+        }
     });
     
     // 鍵盤事件監聽 - Shift+F 隱藏/顯示 altfins 表格
     let altfinsVisible = true;
     
     document.addEventListener('keydown', (event) => {
-        // 檢查是否按下 Shift+F
+        // 檢查是否按下 Shift+F - 隱藏/顯示 altfins 表格
         if (event.shiftKey && (event.key === 'F' || event.key === 'f')) {
             event.preventDefault(); // 防止瀏覽器默認行為
             
@@ -1029,6 +1040,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 // 顯示提示
                 showToggleNotification('📊 數據表格已顯示', 'Shift+F 可隱藏');
             }
+        }
+        
+        // 檢查是否按下 Shift+M - 切換到 15 分鐘週期
+        if (event.shiftKey && (event.key === 'M' || event.key === 'm')) {
+            event.preventDefault(); // 防止瀏覽器默認行為
+            
+            // 移除所有按鈕的 active 狀態
+            document.querySelectorAll('.interval-buttons button').forEach(btn => btn.classList.remove('active'));
+            
+            // 切換到 15 分鐘週期
+            changeInterval('15', null);
+            
+            // 更新 URL hash 為 15M
+            window.location.hash = '15M';
+            
+            // 顯示提示
+            showToggleNotification('⏰ 已切換到 15 分鐘週期', 'Shift+M 快速切換');
         }
     });
 });
