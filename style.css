@@ -319,7 +319,7 @@ html, body {
 }
 
 /* Hide USDT suffix on screens <= 1440px */
-@media (max-width: 1440px) {
+@media (max-width: 1680px) {
     .usdt-suffix {
         display: none;
     }
