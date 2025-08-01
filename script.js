@@ -317,41 +317,41 @@ function updatePageContent(symbolInfo) {
     const chartTitles = document.querySelectorAll('.chart-panel-title');
     if (chartTitles.length >= 6) {
         // 第一張圖表：MA, MACD
-        chartTitles[0].innerHTML = `${symbolInfo.name}/USDT <span class="indicators-info">
+        chartTitles[0].innerHTML = `<span class="symbol-name">${symbolInfo.name}</span><span class="usdt-suffix">/USDT</span> <span class="indicators-info">
             <a href="https://tw.tradingview.com/support/solutions/43000502589/" target="_blank" class="indicator-link">MA</a>, 
             <a href="https://tw.tradingview.com/support/solutions/43000502344/" target="_blank" class="indicator-link">MACD</a>
         </span>`;
         
         // 第二張圖表：BB, SAR, RSI // MA 轉向指標 震盪指標穩健型
-        chartTitles[1].innerHTML = `${symbolInfo.name}/USDT <span class="indicators-info">
+        chartTitles[1].innerHTML = `<span class="symbol-name">${symbolInfo.name}</span><span class="usdt-suffix">/USDT</span> <span class="indicators-info">
             <a href="https://tw.tradingview.com/support/solutions/43000501840/" target="_blank" class="indicator-link">BB</a>, 
             <a href="https://tw.tradingview.com/support/solutions/43000502597/" target="_blank" class="indicator-link">SAR</a>, 
             <a href="https://tw.tradingview.com/support/solutions/43000502338/" target="_blank" class="indicator-link">RSI</a>
         </span>`;
         
         // 第三張圖表：KC, Pivots, KD // EMA + ATR 
-        chartTitles[2].innerHTML = `${symbolInfo.name}/USDT <span class="indicators-info">
+        chartTitles[2].innerHTML = `<span class="symbol-name">${symbolInfo.name}</span><span class="usdt-suffix">/USDT</span> <span class="indicators-info">
             <a href="https://tw.tradingview.com/support/solutions/43000502266/" target="_blank" class="indicator-link">KC</a>, 
             <a href="https://tw.tradingview.com/support/solutions/43000589195/" target="_blank" class="indicator-link">Pivots</a>, 
             <a href="https://tw.tradingview.com/support/solutions/43000502332/" target="_blank" class="indicator-link">KD</a>
         </span>`;
         
         // 第四張圖表：DC, Alligator, CCI 
-        chartTitles[3].innerHTML = `${symbolInfo.name}/USDT <span class="indicators-info">
+        chartTitles[3].innerHTML = `<span class="symbol-name">${symbolInfo.name}</span><span class="usdt-suffix">/USDT</span> <span class="indicators-info">
             <a href="https://tw.tradingview.com/support/solutions/43000502253/" target="_blank" class="indicator-link">DC</a>, 
             <a href="https://tw.tradingview.com/support/solutions/43000592305/" target="_blank" class="indicator-link"><span style="color: #34B77B">Alli</span><span style="color: #FF5252">gat</span><span style="color: #2962FF">or</span></a>, 
             <a href="https://tw.tradingview.com/support/solutions/43000502001/" target="_blank" class="indicator-link">CCI</a>
         </span>`;
 
         // 第五張圖表：Supertrend, ATR, MA
-        chartTitles[4].innerHTML = `${symbolInfo.name}/USDT <span class="indicators-info">
+        chartTitles[4].innerHTML = `<span class="symbol-name">${symbolInfo.name}</span><span class="usdt-suffix">/USDT</span> <span class="indicators-info">
             <a href="https://tw.tradingview.com/support/solutions/43000634738/" target="_blank" class="indicator-link">Supertrend</a>, 
             <a href="https://tw.tradingview.com/support/solutions/43000501823/" target="_blank" class="indicator-link">ATR</a>, 
             <a href="https://tw.tradingview.com/support/solutions/43000502589/" target="_blank" class="indicator-link">MA</a>
         </span>`;
 
         // 第六張圖表：Linear Regression, VWMA, Money Flow Index
-        chartTitles[5].innerHTML = `${symbolInfo.name}/USDT <span class="indicators-info">
+        chartTitles[5].innerHTML = `<span class="symbol-name">${symbolInfo.name}</span><span class="usdt-suffix">/USDT</span> <span class="indicators-info">
             <a href="https://tw.tradingview.com/support/solutions/43000644936/" target="_blank" class="indicator-link">LinReg</a>, 
             <a href="https://tw.tradingview.com/support/solutions/43000592293/" target="_blank" class="indicator-link">VWMA</a>, 
             <a href="https://tw.tradingview.com/support/solutions/43000502348/" target="_blank" class="indicator-link">MFI</a>
