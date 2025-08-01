@@ -318,8 +318,16 @@ html, body {
     display: inline;
 }
 
-@media (max-width: 1366px) {
-    .usdt-suffix, .symbol-name {
+/* Hide USDT suffix on screens <= 1440px */
+@media (max-width: 1440px) {
+    .usdt-suffix {
+        display: none;
+    }
+}
+
+/* Hide symbol and USDT suffix on screens <= 1024px */
+@media (max-width: 1024px) {
+    .symbol-name, .usdt-suffix {
         display: none;
     }
 }
