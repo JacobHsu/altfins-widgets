@@ -332,6 +332,13 @@ html, body {
     }
 }
 
+/* Hide altfins tables when screen width < 1280px (equivalent to Shift+F) */
+@media (max-width: 1280px) {
+    altfins-screener-data-component {
+        display: none !important;
+    }
+}
+
 @media (max-width: 768px) {
     html, body {
         overflow: auto; /* Allow scrolling */
